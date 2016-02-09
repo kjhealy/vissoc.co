@@ -1,0 +1,618 @@
+---
+title       : Looking at Data
+author      : Kieran Healy
+job         : Duke University
+output:
+  html_document:
+    md_extensions: +implicit_figures
+    theme: cerulean
+    highlight: espresso
+---
+
+```{r Setup, include=FALSE, results='hide', warning=FALSE}
+
+library(devtools)
+library(ggplot2)
+
+opts_chunk$set(fig.path="../assets/wk03-fig-",
+               cache.path="../cache/wk03-working-",
+               dev=c("png","pdf"),
+               fig.width=6,
+               fig.height=5,
+               dpi=300,
+               fig.show="hold",
+               fig.lp="fig:",
+               cache=FALSE,
+               par=TRUE,
+               echo=TRUE,
+               message=FALSE,
+               warning=FALSE)
+
+opts_knit$set(kfigr.prefix=TRUE,
+              kfigr.link=FALSE)
+
+```
+
+## Outline 
+
+0. Housekeeping
+1. Patterns in Data
+2. Recapping `ggplot` fundamentals
+3. Worked examples with the Gapminder Data
+4. A new dataset
+5. Dot plots and other 1-D summaries
+
+ 
+### We're good at seeing patterns in data
+
+![Looking for Patterns](../assets/wk-03-random-structure.png)
+
+- (Images: Peter Coles)
+
+
+
+### Maybe a little too good
+
+![Looking for Patterns](../assets/wk-03-random-structure.png)
+
+- (L) Random 2-D Poisson Process. 
+- (R) Random Process with added spatial anti-correlation.
+- (Images: Peter Coles)
+
+
+
+## ggplot 
+
+```{r, getdata-1, echo= TRUE}
+
+gapminder.url <- "https://raw.githubusercontent.com/socviz/soc880/master/data/gapminder.csv"
+my.data <- read.csv(url(gapminder.url))
+dim(my.data)
+head(my.data)
+```
+
+
+
+```{r}
+## We'll be a bit more verbose
+## to make things clearer
+p <- ggplot(data=my.data,
+            aes(x=gdpPercap,
+                y=lifeExp))
+
+```
+
+
+
+```{r}
+
+p + geom_point()
+
+```
+
+
+
+## The Plot-Making Process
+
+#### 0. Start with your data in the right shape
+
+#### 1. Tell `ggplot` *what* relationships you want to see
+
+#### 2. Tell `ggplot` *how* you want to see them
+
+#### 3. Layer these pictures as needed
+
+#### 4. Fine-tune scales, labels, tick marks, etc
+
+
+
+#### Mapping variables to aesthetic features
+
+- `ggplot` works by building your plot piece by piece
+- The `aes()` function maps *variables* to *aesthetic features* of the plot.
+- The `x` and `y` values are the most obvious ones.
+- Other aesthetic mappings include, e.g., `color`, `shape`, and `size`.
+- These mappings are not *directly* specifying what specific, e.g.,
+  colors or shapes will be on the plot. Rather they say which
+  *variables* in the data will be *represented* by, e.g., colors and
+  shapes.
+
+
+
+#### Specify aesthetic mappings all at once, or per geom layer
+
+```{r}
+p + geom_point(aes(color=continent)) +
+    geom_smooth(method="loess") + 
+    scale_x_log10()
+
+```
+
+
+
+#### Layer functions have options other than aesthetic mappings. These don't go in inside the aes() function
+
+```{r}
+
+p + geom_point(aes(color=continent)) +
+    geom_smooth(color="darkgreen", se=FALSE, size=2, method="lm") +
+    scale_x_log10()
+
+
+```
+
+
+
+#### First geoms, then scales, then labels, theme elements, and titles
+
+```{r}
+
+library(scales)
+
+p + geom_point(aes(color=continent)) +
+    geom_smooth(color="orange", method="loess", se=FALSE, size=2) +
+    scale_x_log10(labels=comma) +
+    labs(x="GDP per Capita",
+         y="Life Expectancy",
+         color="Continent") +
+    theme(legend.position="bottom") +
+    ggtitle("Broad Trends")
+
+
+```
+
+
+
+#### When ggplot misbehaves or gives unexpected output, it is usually because the mapping you have specified is not what you need, or the variable is not appropriate to the aesthetic feature in some way 
+
+
+
+```{r}
+
+p <- ggplot(my.data,
+            aes(x=gdpPercap, y=lifeExp))
+
+p + geom_line() +
+    scale_x_log10() 
+
+```
+
+- What's wrong with this picture?
+
+
+
+##### Put year on the x-axis
+
+```{r}
+
+p <- ggplot(my.data,
+            aes(x=year, y=lifeExp))
+p + geom_line() +
+    scale_x_log10() 
+
+
+```
+
+- Hmm, not much better
+- Also, why are there no x labels for years?
+
+
+
+
+##### Put year on the x-axis
+
+```{r}
+
+p <- ggplot(my.data,
+            aes(x=year, y=lifeExp))
+p + geom_line() 
+
+```
+
+- Fix the scale. 
+- The plot is still meaningless, unfortunately
+
+
+
+
+```{r}
+
+p <- ggplot(my.data,
+            aes(x=year, y=lifeExp))
+p + geom_line(aes(group=country)) 
+
+```
+
+- More promising
+
+
+
+
+```{r}
+
+p <- ggplot(my.data,
+            aes(x=year, y=lifeExp))
+p + geom_line(aes(group=country,
+                  color=continent)) 
+
+```
+
+- Better
+
+
+
+
+### Let's just look at Asia
+
+
+```{r}
+
+p <- ggplot(my.data,
+            aes(x=year, y=lifeExp))
+p + geom_line(aes(group=country,
+                  color=(continent=="Asia"))) + scale_color_manual(values=c("gray70", "firebrick")) 
+```
+
+
+
+
+### Better colors
+
+
+```{r}
+
+p <- ggplot(my.data,
+            aes(x=year, y=lifeExp))
+p + geom_line(aes(group=country,
+                  color=(continent=="Asia"))) +
+    scale_color_manual(values=c("gray70", "firebrick")) 
+
+```
+
+
+
+### Better Legend Labels
+
+```{r}
+
+p + geom_line(aes(group=country,
+                  color=(continent=="Asia"))) +
+    scale_color_manual(values=c("gray70", "firebrick"),
+                       labels=c("All Other Countries", "Asian Countries")) +
+    scale_x_log10() 
+```
+
+
+
+
+
+### Better Legend Title and Position
+
+```{r}
+
+p + geom_line(aes(group=country,
+                  color=(continent=="Asia"))) +
+    scale_color_manual(values=c("gray70", "firebrick"),
+                       labels=c("All Other Countries", "Asian Countries")) +
+    labs(color="Country") +
+    theme(legend.position="top")
+    
+```
+
+
+
+
+### Make the Salient category the first one
+
+```{r}
+
+p + geom_line(aes(group=country,
+                  color=(continent=="Asia"))) +
+    scale_color_manual(values=c("gray70", "firebrick"),
+                       labels=c("All Other Countries", "Asian Countries")) +
+    labs(color="Country") +
+    theme(legend.position="top") +
+    guides(color=guide_legend(reverse = TRUE))
+    
+```
+
+
+
+
+### And add labels
+
+```{r}
+
+p + geom_line(aes(group=country,
+                  color=(continent=="Asia"))) +
+    scale_color_manual(values=c("gray70", "firebrick"),
+                       labels=c("All Other Countries", "Asian Countries")) +
+    labs(x="Year",
+         y="Life Expectancy",
+         color="Country") +
+    theme(legend.position="top") +
+    guides(color=guide_legend(reverse = TRUE))
+    
+```
+
+- Still lots of room for improvement. E.g., note how the Asian trend lines are drawn under the gray ones. 
+
+
+
+#### To see the logic behind each plot, peel each layer off from the last one to the first. See which parts of the plot change, or disappear. 
+
+
+
+## A New Dataset
+
+```{r, get-organdata, echo= TRUE}
+
+organs.url <- "https://raw.githubusercontent.com/socviz/soc880/gh-pages/data/organ-procurement.csv"
+organs.data <- read.csv(url(organs.url), row.names=1)
+dim(organs.data)
+head(organs.data)
+
+## For convenience, let R know year is a time measure.
+organs.data$year <- as.Date(strptime(organs.data$year, format="%Y"))
+
+```
+
+
+
+
+### Similar country-year structure to before
+
+- Before looking at the next few slides, what can you get out of this dataset?
+- Try examining it and making a few plots
+
+
+
+```{r}
+
+p <- ggplot(data=organs.data,
+            aes(x=year,
+                y=donors))
+
+p + geom_point()
+
+```
+
+
+
+```{r}
+
+
+p + geom_line(aes(group=country,
+                  color=consent.law)) +
+    scale_color_manual(values=c("gray40", "firebrick")) +
+    scale_x_date() + 
+    labs(x="Year",
+         y="Donors",
+         color="Consent Law") +
+    theme(legend.position="top")
+
+
+```
+
+
+
+```{r}
+
+p + geom_line(aes(group=country)) +
+    labs(x="Year",
+         y="Donors") +
+    facet_grid(~ consent.law)
+
+```
+
+
+
+## A quick bit of data manipulation
+
+```{r}
+
+library(magrittr)
+library(dplyr)
+
+
+by.country <- organs.data %>% group_by(consent.law, country) %>%
+    summarize(donors=mean(donors, na.rm = TRUE))
+
+
+by.country
+
+```
+
+
+
+```{r}
+
+p <- ggplot(by.country, aes(x=donors, y=country, color=consent.law))
+p + geom_point(size=3)
+
+```
+
+- How can we improve this?
+
+
+
+
+```{r}
+
+p <- ggplot(by.country, aes(x=donors, y=reorder(country, donors), color=consent.law))
+p + geom_point(size=3)
+
+```
+
+- Get your factors (the categorical variable) in order
+
+
+
+
+```{r}
+
+p + geom_point(size=3) +
+    labs(x="Donor Procurement Rate (per million population)",
+         y="",
+         color="Consent Law") +
+    theme(legend.position="top")
+
+```
+
+
+
+## Alternatively 
+
+```{r}
+p <- ggplot(by.country, aes(x=donors, y=reorder(country, donors)))
+p + geom_point(size=3) +
+    facet_grid(consent.law ~ ., scales="free") +
+    labs(x="Donor Procurement Rate (per million population)",
+         y="",
+         color="Consent Law") +
+    theme(legend.position="top")
+
+```
+
+
+
+#### Cleveland Dotplots of this sort are a very useful way of summarizing 1-D data that comes in categories
+
+- Consider them in preference to bar or column charts
+- Keeping the categories on the y-axis is often a good idea
+- The principle extends to 1-D summaries of distributions
+- They are also an excellent way to summarize model results with error ranges 
+
+
+
+#### Summary Boxplots
+
+```{r}
+
+p <- ggplot(data=organs.data,
+            aes(x=country,
+                y=donors)) 
+
+
+p + geom_boxplot() +
+    coord_flip() +
+    labs(x="",
+         y="Donor Procurement Rate")
+
+
+```
+
+
+
+#### Summary Boxplots
+
+```{r}
+
+p <- ggplot(data=organs.data,
+            aes(x=reorder(country, donors, na.rm=TRUE),
+                y=donors)) 
+
+
+p + geom_boxplot() +
+    coord_flip() +
+    labs(x="",
+         y="Donor Procurement Rate")
+
+
+```
+
+
+
+#### Summary Boxplots
+
+```{r}
+
+p <- ggplot(data=organs.data,
+            aes(x=reorder(country, donors, na.rm=TRUE),
+                y=donors)) 
+
+
+p + geom_boxplot(aes(fill=consent.law)) +
+    coord_flip() +
+    labs(x="",
+         y="Donor Procurement Rate")
+
+
+```
+
+
+
+
+
+#### 1-D point summaries
+
+```{r}
+
+p <- ggplot(data=organs.data,
+            aes(x=reorder(country, donors, na.rm=TRUE),
+                y=donors)) 
+
+
+p + geom_point(aes(color=consent.law)) +
+    coord_flip() +
+    labs(x="",
+         y="Donor Procurement Rate")
+
+
+```
+
+
+
+#### Add a little jitter
+
+```{r}
+
+p <- ggplot(data=organs.data,
+            aes(x=reorder(country, donors, na.rm=TRUE),
+                y=donors)) 
+
+
+p + geom_jitter(aes(color=consent.law)) +
+    coord_flip() +
+    labs(x="",
+         y="Donor Procurement Rate")
+
+
+```
+
+
+
+
+
+
+#### Fine-tune the jittering
+
+```{r}
+
+p <- ggplot(data=organs.data,
+            aes(x=reorder(country, assault, na.rm=TRUE),
+                y=assault)) 
+
+
+p + geom_jitter(aes(color=world),
+                position = position_jitter(width=0.15)) +
+    coord_flip() +
+    ## labs(x="",
+    ##      y="Donor Procurement Rate",
+    ##      color="Consent Law") +
+    theme(legend.position="top")
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+

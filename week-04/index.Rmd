@@ -1,0 +1,360 @@
+---
+title       : Data and Models
+author      : Kieran Healy
+job         : Duke University
+output:
+  html_document:
+    md_extensions: +implicit_figures
+    theme: cerulean
+    highlight: espresso
+---
+
+```{r Setup, include=FALSE, results='hide', warning=FALSE}
+
+library(devtools)
+library(ggplot2)
+
+opts_chunk$set(fig.path="../assets/wk04-fig-",
+               cache.path="../cache/wk04-working-",
+               dev=c("png","pdf"),
+               fig.width=6,
+               fig.height=5,
+               dpi=300,
+               fig.show="hold",
+               fig.lp="fig:",
+               cache=TRUE,
+               par=TRUE,
+               echo=TRUE,
+               message=FALSE,
+               warning=FALSE)
+
+opts_knit$set(kfigr.prefix=TRUE,
+              kfigr.link=FALSE)
+
+```
+
+
+## Outline for Today
+
+0. Housekeeping
+1. Pairs Plots
+2. Looking at Data while Modeling
+3. `broom`
+4. A (curse) word about Git
+5. The NZ Electorate data
+
+ 
+## Organs Data
+
+```{r, get-organdata, echo= TRUE}
+
+organs.url <- "https://raw.githubusercontent.com/socviz/soc880/gh-pages/data/organ-procurement.csv"
+organs.data <- read.csv(url(organs.url), row.names=1)
+dim(organs.data)
+head(organs.data)
+
+## For convenience, let R know year is a time measure.
+organs.data$year <- as.Date(strptime(organs.data$year, format="%Y"))
+
+```
+
+
+
+#### Pairs Plot
+
+```{r, warning=FALSE}
+
+## install.packages("GGally")
+library(GGally)
+
+my.vars <- c("donors", "pop", "gdp",
+             "pubhealth", "assault")
+
+#pdf(file="../figures/ggpairs-plot-1.pdf", height=15, width=15)
+p <- ggpairs(subset(organs.data, select=my.vars),
+        upper=list(continuous="smooth"),
+        lower=list(continuous="points"))
+print(p)
+#dev.off()
+
+```
+
+
+
+#### Generalized Pairs Plots 
+
+```{r, warning=FALSE}
+
+
+my.vars <- c("donors", "pop.dens", "gdp",
+             "pubhealth", "world", "consent.law",
+             "assault", "opt")
+
+# pdf(file="../figures/ggpairs-plot-2.pdf", height=20, width=20)
+p <- ggpairs(subset(organs.data, select=my.vars),
+        upper=list(continuous="smooth", combo="box"),
+        lower=list(continuous="points", combo="dot"))
+print(p)
+# dev.off()
+
+```
+
+
+## Looking While Modeling
+
+- Frank Harrell, *Regression Modeling Strategies* (Springer 2001) is an older text, but the visualization principles are good. Two of his useful software libraries for R are `Hmisc` and `rms`.
+
+```{r}
+
+### install.packages("Hmisc")
+### install.packages("rms")
+
+library(Hmisc)
+library(rms)
+
+vc <- varclus(~ donors + pop.dens + gdp + pubhealth + assault + world + consent.law,
+              data=organs.data)
+plot(vc)
+
+```
+
+
+
+```{r}
+
+plot(naclus(organs.data))
+
+```
+
+
+
+```{r}
+
+s <- summary(donors ~ pop.dens + gdp + pubhealth + assault + world + consent.law,
+              data=organs.data)
+
+plot(s, cex.labels = 0.6)
+
+```
+
+
+
+## Diagnostic Plots for a Poorly-Specified Model
+
+```{r}
+
+out.lm <- lm(donors ~ pop.dens + gdp + pubhealth + assault + consent.law,
+             data=organs.data)
+
+summary(out.lm)
+
+```
+
+
+
+```{r}
+
+plot(out.lm, which=1)
+
+```
+
+
+
+```{r}
+
+plot(out.lm, which=2)
+
+```
+
+
+
+
+```{r}
+
+plot(out.lm, which=3)
+
+```
+
+
+
+```{r}
+
+plot(out.lm, which=5)
+
+```
+
+
+
+### Plotting results with Hmisc
+
+```{r}
+
+## NB
+out.ols <- ols(donors ~ pop.dens + gdp + pubhealth + assault + consent.law,
+             data=organs.data)
+
+d <- datadist(organs.data)
+options(datadist="d")
+options(digits = 2)
+
+plot(summary(out.ols))
+
+```
+
+
+
+## Tidy Model Output with `broom`
+
+```{r}
+
+## install.packages("broom")
+
+library(broom)
+
+## more irresponsible model
+out.lm <- lm(pubhealth ~ pop.dens + gdp + country,
+             data=organs.data)
+
+summary(out.lm)
+
+
+```
+
+
+
+### Model objects have a lot of information in them
+
+```{r}
+
+str(out.lm)
+
+```
+
+
+
+### `broom` turns summary model output into data frames
+
+```{r}
+
+out.tidy <- tidy(out.lm, conf.int = TRUE)
+class(out.tidy)
+
+head(out.tidy)
+
+```
+
+
+
+### It will also "augment" data frames
+
+```{r}
+
+out.aug <- augment(out.lm)
+head(out.aug)
+
+
+```
+
+
+
+### Tidy output is easy to quickly plot
+
+```{r}
+
+p <- ggplot(out.tidy, aes(y=estimate,
+                          x=reorder(term, estimate)))
+p0 <- p + geom_pointrange(aes(ymin=conf.low,
+                        ymax=conf.high)) +
+    geom_hline(aes(yintercept=0)) +
+    coord_flip()
+
+```
+
+
+
+### Tidiers are available for many packages
+
+```{r}
+
+library(survival)
+
+out.surv <- survfit(coxph(Surv(time, status) ~ age + sex, data=lung))
+
+out.tidy <- tidy(out.surv)
+
+p <- ggplot(out.tidy, aes(time, estimate))
+
+p + geom_line() +
+    geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .2)
+
+```
+
+
+
+### Model objects have associated `summary` and `plot` methods
+
+
+
+### New Zealand Electorate Data
+
+- On GitHub: https://github.com/kjhealy/nz-sex-ratios
+
+
+
+## Excursus on Git
+
+
+### Git is Horrible
+
+- But it can help you keep track of what you did
+- It's also where a lot of software development happens
+- So it's worth getting a feel for it
+
+
+## GitHub
+
+### Simplest GitHub Use Case
+
+- You have no account there.
+- You download stuff from it.
+
+
+### Next Simplest GitHub Use Case
+
+- You have an account there.
+- You fork (i.e., copy) things on other people's GitHub accounts to
+  your GitHub account. 
+- Then you clone (i.e., copy, or download) them to your laptop.
+- This kind of confusing, doubled-up, garbage terminology is typical of Git. 
+ 
+
+### Basic One-Person Regular Git Use Case
+
+- You have a file under version control.
+- You make a change to it and save the file.
+- You stage or `add` a snapshot of the changed files, 
+- Then you `commit` the snapshot of changes to the
+repository, with a message saying what you did.
+
+
+### Basic One-Person Regular Git Use Case
+
+- You have a file under version control.
+- You make a change to it and save the file.
+- You stage or `add` a snapshot of the changed files, 
+- Then you `commit` the snapshot of changes to the
+  repository, with a message saying what you did.
+- You `push` that change up to e.g. GitHub.
+
+
+
+### Tutorial
+
+- https://try.github.io/levels/1/challenges/1
+
+
+
+## Back to the New Zealand Data
+
+
+

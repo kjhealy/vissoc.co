@@ -1,0 +1,507 @@
+---
+title       : "Getting Used to ggplot"
+author      : Kieran Healy
+job         : Duke University
+output:
+  html_document:
+    theme: cerulean
+    highlight: espresso
+---
+
+```{r Setup, include=FALSE, results='hide', warning=FALSE}
+
+library(devtools)
+library(ggplot2)
+
+opts_chunk$set(fig.path="../assets/wk02-fig-",
+               cache.path="../cache/wk02-working-",
+               dev=c("png","pdf"),
+               fig.width=6,
+               fig.height=5,
+               dpi=300,
+               fig.show="hold",
+               fig.lp="fig:",
+               cache=TRUE,
+               par=TRUE,
+               echo=TRUE,
+               message=FALSE,
+               warning=FALSE)
+
+opts_knit$set(kfigr.prefix=TRUE,
+              kfigr.link=FALSE)
+
+
+```
+
+
+## Outline for Today
+
+0. Housekeeping
+1. Basic Principles Again
+2. Introducing `ggplot`
+3. Summarizing a Variable
+
+## Reminder
+
+- There are two ways to learn R: the easy way and the tedious way. 
+- The problem is that the easy way doesn't work.
+- You have to practice the examples and work through them manually.
+  Type them out, even if you're just copying at the beginning. It
+  really will help you get used to how the language works.
+- You will benefit a lot from taking almost any R tutorial, whether from a textbook or online. The syllabus has links. 
+- For example, [Try R](http://tryr.codeschool.com/levels/1/challenges/1).
+
+
+# Principles Again
+
+
+
+## Perception
+
+- Visualizing data is not just a matter of good taste.
+- Basic perceptual processes play a very strong role.
+- These have consequences for how we will want to encode data when we
+  visualize iti.e., how and whether we choose to represent numbers
+  or categories as shapes, colors, lengths, etc.
+- We more easily see edges, contrasts, and movement.
+- We judge relative differences rather than absolute values.
+- We tend to infer relationships between elements based on
+  gestalt-like rules.
+
+
+
+### Hermann Grid Effect
+
+![Hermann Grid Effect](../assets/perception-hermann-grid-effect.jpg)
+
+
+
+### Constrast Effects 
+
+![Contrast Effects](../assets/perception-contrast-effects.png)
+
+
+
+### Color makes things Complex
+
+![Color Makes things More Complex](../assets/perception-coloreffects1.png)
+
+
+### What stands out?
+
+![What stands out](../assets/perception-easy-hard.png)
+
+- (Courtesy Miriah Meyer.)
+
+
+### Gestalt Rules
+
+![Gestalt Rules](../assets/perception-gestalt-1-bang-wong.jpg)
+
+- Bang Wong, _Nature Methods_ 7 863 (2010)
+
+
+![Gestalt Rules](../assets/perception-gestalt-2-bang-wong.jpg)
+
+- Bang Wong, _Nature Methods_ 7 863 (2010)
+
+- For more on perception, color, and cognitive processing of images, see [Miriah Meyer's Visualization Lectures](http://www.sci.utah.edu/~miriah/cs6630/), especially weeks 2 and 3.
+
+
+
+## Picking Out a Data Point
+
+```{r, echo = FALSE}
+
+correlatedValue <- function(x, r){
+  r2 = r^2
+  ve = 1-r2
+  SD = sqrt(ve)
+  e  = rnorm(length(x), mean=0, sd=SD)
+  y  = r*x + e
+  return(y)
+}
+
+n.obs <- 200
+
+set.seed(10)
+x <- rnorm(n.obs)
+y <- correlatedValue(x=x, r=.7)
+z <- correlatedValue(x=y, r=0.95)
+z <- factor(z>0 & sample(z, n.obs))
+
+pop <- rep(FALSE, length(x))
+ind <- which(x==max(x))
+
+pop[ind] <- TRUE
+
+big <- rep(3, length(x))
+big[pop==TRUE] <- 5
+
+
+alt <- rep(c("Shape 1", "Shape 2"), length(x)/2)
+alt4 <- rep(c("Shape 1", "Shape 2", "Shape 3", "Shape 4"), length(x)/2)
+
+color4 <- cut(1:length(x), 4, labels = c("Class 1", "Class 2", "Class 3", "Class 4"))
+
+color.ordered <- cut(x, 4, labels = c("Class 1", "Class 2", "Class 3", "Class 4"))
+
+shape.ordered <- cut(y, 2, labels = c("Class 1", "Class 2"))
+
+
+x <- x + 10
+y <- y + 10
+
+data <- data.frame(Tea=x, Biscuits=y,
+                   Chocolate=z, Pop=pop,
+                   Alt=alt, Alt4=alt4,
+                   Class=color4, Class.o=color.ordered,
+                   Shape.o=shape.ordered,
+                   Big=big)
+
+```
+
+```{r, echo = FALSE, fig.width=11, fig.height=8.5}
+
+p <- ggplot(data, aes(x=Tea, y=Biscuits))
+p + geom_point(size=3)
+
+```
+
+### Pick it out by Shape?
+
+```{r, echo=FALSE, fig.width=11, fig.height=8.5}
+
+p <- ggplot(data, aes(x=Tea, y=Biscuits, shape=Pop))
+
+p + geom_point(size=3) +
+    guides(shape=FALSE)
+
+```
+
+- Highlight by shape
+
+
+
+### Pick it out by Color?
+
+```{r, echo=FALSE, fig.width=11, fig.height=8.5}
+
+p <- ggplot(data, aes(x=Tea, y=Biscuits, color=Pop))
+p + geom_point(size=3) +
+    scale_color_manual(values = c("Black", "Red")) +
+    guides(color=FALSE)
+
+```
+
+- Highlight by color
+
+
+### Pick it out by Size?
+
+```{r, echo=FALSE, fig.width=11, fig.height=8.5}
+
+p <- ggplot(data, aes(x=Tea, y=Biscuits, size=Big))
+
+p + geom_point() +
+    scale_size_continuous(range = c(3,8)) +
+    guides(size=FALSE)
+
+
+```
+
+- Highlight by size
+
+
+
+### How about all three?
+
+```{r, echo=FALSE, fig.width=11, fig.height=8.5}
+
+p <- ggplot(data, aes(x=Tea, y=Biscuits, color=Pop, shape=Pop, size=Big))
+
+p + geom_point() +
+    scale_size_continuous(range = c(3,8)) +
+    scale_color_manual(values = c("Black", "Red")) + 
+    guides(color=FALSE, shape=FALSE, size=FALSE)
+
+
+```
+
+- Highlight by all three
+
+
+### Multiple channels of comparison become uninterpretable very fast
+
+```{r, echo=FALSE, fig.width=11, fig.height=8.5}
+
+p <- ggplot(data, aes(x=Tea, y=Biscuits, color=Alt4, shape=Class, size=Big))
+
+p + geom_point() +
+    scale_size_continuous(range = c(3,8)) +
+    scale_color_manual(values = c("Black", "Red", "Green", "Purple")) + 
+    guides(color=FALSE, shape=FALSE, size=FALSE)
+
+
+```
+
+
+
+### Unless your data has a lot of structure
+
+
+```{r, echo=FALSE, fig.width=11, fig.height=8.5}
+
+p <- ggplot(data, aes(x=Tea, y=Biscuits, color=Class.o, shape=Shape.o))
+
+p + geom_point(size=3) +
+    scale_color_manual(values = c("Black", "Red", "forestgreen", "Purple")) +
+    guides(color=FALSE, shape=FALSE)
+
+
+```
+
+
+
+
+<q> The data on the graph are the reason for the existence of the graph.</q>
+
+Cleveland (1994, 25)
+
+
+
+# Writing Plots
+
+
+
+## Go get the Gapminder Data 
+
+```{r, getdata-1, echo= TRUE}
+
+gapminder.url <- "https://raw.githubusercontent.com/socviz/soc880/master/data/gapminder.csv"
+my.data <- read.csv(url(gapminder.url))
+dim(my.data)
+head(my.data)
+```
+
+- Remember what we said before about everything being an object, and
+  every object having a class.
+
+
+
+```{r}
+## We'll be a bit more verbose
+## to make things clearer
+p <- ggplot(data=my.data,
+            aes(x=gdpPercap,
+                y=lifeExp)) 
+
+```
+
+- `ggplot` works by building your plot piece by piece
+- We start with a clean data frame called `my.data`
+- Then we tell `ggplot` what pieces of it we are interested in right now.
+- We create an object called `p` containing this information
+- Here, `x=gdpPercap` and `y=lifeExp` say what will go on the `x` and the `y` axes
+- These are *aesthetic mappings* that connect pieces of the data to things we can actually see on a plot.
+
+
+
+
+## About aesthetic mappings
+
+- The `aes()` function *links variables* to *things you will see* on the plot.
+- The `x` and `y` values are the most obvious ones.
+- Other aesthetic mappings include, e.g., `color`, `shape`, and `size`.
+- These mappings are not *directly* specifying what specific, e.g.,
+  colors or shapes will be on the plot. Rather they say which
+  *variables* in the data will be *represented* by, e.g., colors and
+  shapes on the plot.
+
+
+
+### Adding layers to the plot
+
+- What happens when you type `p` at the console and hit return?
+- We need to add a *layer* to the plot. 
+- This takes the `p` object we've created, and applies `geom_point()`
+  to it, a function that knows how to take `x` and `y` values and plot
+  them in a scatterplot.
+
+
+
+```{r}
+
+p + geom_point()
+
+```
+
+
+
+## The Plot-Making Process
+
+#### 0. Start with your data in the right shape
+
+#### 1. Tell `ggplot` *what* relationships you want to see
+
+#### 2. Tell `ggplot` *how* you want to see them
+
+#### 3. Layer these pictures as needed
+
+#### 4. Fine-tune scales, labels, tick marks, etc
+
+
+
+#### This layering process is literally additive
+
+```{r}
+
+p <- ggplot(my.data,
+            aes(x=gdpPercap, y=lifeExp))
+
+p + geom_point()
+
+```
+
+ 
+
+```{r}
+
+p + geom_point() +
+    geom_smooth(method="loess") 
+
+```
+
+- Here we add a second geom. It's a `loess` smoother. There are
+  others. Try `lm`, for example.
+
+
+
+- What happens when you put `geom_smooth()` first instead of second?
+- Notice how both `geom_point` and `geom_smooth()` inherit the
+  information in `p` about what the `x` and `y` variables are.
+
+
+
+```{r}
+
+p + geom_point() +
+    geom_smooth(method="loess") +
+    scale_x_log10()
+
+```
+
+- The next layer does not change anything in the underlying data. Instead it adjusts the x-axis scale. 
+
+ 
+
+
+
+```{r}
+
+p + geom_point(color="firebrick") +
+    geom_smooth(method="loess") +
+    scale_x_log10()
+
+```
+
+- Here, notice we changed the color of the points by specifying the `color` argument in `geom_point()`. This is called *setting* an aesthetic feature. 
+
+ 
+
+- Setting an aesthetic has no relationship to the data. In the
+  previous plot, the color red is not representing or *mapping* any
+  feature of the data.
+- To see the difference between *setting* and *mapping* an aesthetic, let's go back to our `p` object and recreate it. 
+- This time, in addition to `x` and `y` we tell `ggplot` to map the variable `Continent` to the `color` aesthetic.
+
+
+```{r}
+
+p <- ggplot(my.data,
+            aes(x=gdpPercap,
+                y=lifeExp,
+                color=continent))
+```
+
+- Now there *is* a relationship or *mapping* between the data and the aesthetic.
+- The values of the variable `continent` will be *represented* by colors on the figure we draw.
+
+
+
+```{r}
+
+p + geom_point() +
+    scale_x_log10()
+
+
+```
+
+- Like this. We do not manually specify any colors. We told `ggplot()` to *map* the values of `contintent` to the property, or *aesthetic*, of `color`
+- Try mapping `continent` to the aesthetic `shape`.
+
+
+
+
+### Colorless green ideas sleep furiously
+
+- `ggplot` implements a "grammar" of graphics, an idea developed by Leland Wilkinson (2005).
+- The grammar gives you rules for how to map
+  pieces of data to geometric objects (like points and lines) with
+  attributes (like color and size), together with further rules for
+  transforming the data if needed, adjusting scales, or projecting the
+  results onto a coordinate system.
+- A key point is that, like other rules of syntax, it limits what you
+  can say but doesn't make what you say sensible or meaningful. 
+- It allows you to produce "sentences" (mappings of data to objects)
+but they can easily be garbled.
+
+
+
+### More work needed (1)
+
+```{r}
+
+p + geom_line()
+
+```
+
+
+
+### More work needed (2)
+
+```{r}
+
+p + geom_bar(stat="identity")
+
+```
+
+-
+
+### Once you get used to it, this layered grammar lets you build up sophisticated plots
+
+
+
+```{r, fig.width=12, fig.height=5}
+
+## "Not in" convenience operator
+"%nin%" <- function(x, y) {
+  return( !(x %in% y) )
+}
+
+p <- ggplot(subset(my.data, country %nin% "Kuwait"), aes(x=year, y=gdpPercap))
+
+p1 <- p + geom_line(color="gray70", aes(group=country)) +
+    geom_smooth(size=1.1, method="loess", se=FALSE)
+
+p1 + facet_wrap(~ continent) + labs(x="Year", y="GDP")
+    
+
+```
+
+
+
+- To see the logic of each step of a plot, peel the layers backwards from the last one to the first, and see which parts of the plot are changed, or disappear. 
+- Also examine what happens if you change some of the arguments, e.g. `se=TRUE`, or `method='lm'`, or what happens when you leave them at their defaults.
+
+

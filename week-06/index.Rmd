@@ -1,0 +1,852 @@
+---
+title       : Refining Plots
+author      : Kieran Healy
+job         : Duke University
+output:
+  html_document:
+    md_extensions: +implicit_figures
+    theme: cerulean
+    highlight: espresso
+---
+
+```{r Setup, include=FALSE, results='hide', warning=FALSE}
+
+library(devtools)
+library(ggplot2)
+
+opts_chunk$set(fig.path="../assets/wk06-fig-",
+               cache.path="../cache/wk06-working-",
+               dev=c("png","pdf"),
+               fig.width=6,
+               fig.height=5,
+               dpi=300,
+               fig.show="hold",
+               fig.lp="fig:",
+               cache=TRUE,
+               par=TRUE,
+               echo=TRUE,
+               message=FALSE,
+               warning=FALSE)
+			   
+opts_knit$set(kfigr.prefix=TRUE,
+              kfigr.link=FALSE)
+
+```
+
+
+## Outline for Today
+
+0. Housekeeping
+1. Building up plots, again
+2. ggplot themes
+3. Writing a small helper function
+4. Custom plots and layouts
+
+
+## Building up Plots, Again
+
+
+```{r}
+
+library(ggplot2)
+library(scales)
+library(MASS)
+library(stringr)
+library(splines)
+
+theme_set(theme_gray())
+
+```
+
+
+
+### ASA Membership & Revenue data
+
+- On Github: [ASA Sections](https://github.com/kjhealy/asa-sections)
+- Or manually: 
+
+```{r}
+
+asa.url <- "https://raw.githubusercontent.com/kjhealy/asa-sections/master/data/asa-section-membership.csv"
+asa.data <- read.csv((url(asa.url)), header = TRUE)
+
+## If you cloned the github repository, launch R in it and then
+## asa.data <-  read.csv("data/asa-section-membership.csv", header=TRUE) 
+
+dim(asa.data)
+head(asa.data)
+
+
+```
+
+
+
+### Quick & Dirty Function for custom colors ###
+
+```{r}
+
+my.colors <- function (palette = "cb") {
+    cb.palette <- c("#999999", "#E69F00", "#56B4E9", "#009E73",
+                    "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+    rcb.palette <- rev(cb.palette)
+    bly.palette <- c("#E69F00", "#0072B2", "#999999", "#56B4E9",
+                     "#009E73", "#F0E442", "#D55E00", "#CC79A7")
+    if (palette == "cb")
+        return(cb.palette)
+    else if (palette == "rcb")
+        return(rcb.palette)
+    else if (palette == "bly")
+        return(bly.palette)
+    else stop("Choose cb, rcb, or bly ony.")
+}
+
+```
+
+
+
+## Make sure the figures/ directory is available
+
+```{r}
+
+ifelse(!dir.exists(file.path("figures")),
+       dir.create(file.path("figures")),
+       FALSE)
+
+```
+
+
+
+## Starting with the basics again
+
+```{r}
+
+p <- ggplot(asa.data, aes(x=X2014, y=Revenues, label=Sname))
+
+p0 <- p + geom_point()
+
+```
+
+
+
+```{r}
+
+print(p0)
+
+```
+
+
+
+## Add a smoother
+
+```{r}
+
+p <- ggplot(asa.data, aes(x=X2014, y=Revenues, label=Sname))
+
+p0 <- p + geom_smooth() +
+    geom_point()
+
+
+```
+
+
+```{r}
+
+print(p0)
+
+```
+
+
+
+## Pick out some outliers
+
+```{r}
+
+p <- ggplot(asa.data, aes(x=X2014, y=Revenues, label=Sname))
+
+p0 <- p + geom_smooth() +
+    geom_point() +
+    geom_text(data=subset(asa.data, Revenues > 7000)) 
+
+```
+
+
+```{r}
+
+print(p0)
+
+```
+
+
+
+## Introduce a third variable ##
+
+```{r}
+
+p <- ggplot(asa.data, aes(x=X2014, y=Revenues, label=Sname))
+
+p0 <- p + geom_smooth() +
+    geom_point(aes(color = Journal)) +
+    geom_text(data=subset(asa.data, Revenues > 7000)) 
+
+```
+
+
+
+```{r}
+
+print(p0)
+
+```
+
+
+
+
+## Change the fitted line ##
+
+```{r}
+
+p <- ggplot(asa.data, aes(x=X2014, y=Revenues, label=Sname))
+
+p0 <- p + geom_smooth(method = "lm",
+                  se = FALSE,
+                  color = "gray80") +
+    geom_point(aes(color = Journal)) +
+    geom_text(data=subset(asa.data, Revenues > 7000)) 
+
+```
+
+
+
+```{r}
+
+print(p0)
+
+```
+
+
+
+## Tidy up the labeled text ##
+
+```{r}
+
+p <- ggplot(asa.data, aes(x=X2014, y=Revenues, label=Sname))
+
+p0 <- p + geom_smooth(method = "lm",
+                  se = FALSE,
+                  color = "gray80") +
+    geom_point(aes(color = Journal)) +
+    geom_text(data=subset(asa.data, Revenues > 7000),
+              size = 2,
+              aes(x=X2014+10,
+                  hjust = 0,
+                  lineheight = 0.7)) 
+
+```
+
+
+
+```{r}
+
+print(p0)
+
+```
+
+
+
+
+## Label the Axes and Scales ##
+
+```{r}
+
+p <- ggplot(asa.data, aes(x=X2014, y=Revenues, label=Sname))
+
+p0 <- p + geom_smooth(method = "lm",
+                  se = FALSE,
+                  color = "gray80") +
+    geom_point(aes(color = Journal)) +
+    geom_text(data=subset(asa.data, Revenues > 7000),
+              size = 2,
+              aes(x=X2014+10,
+                  hjust = 0,
+                  lineheight = 0.7)) +
+
+   labs(x="Membership",
+        y="Revenues",
+        color = "Section has own Journal") 
+
+```
+
+
+
+```{r}
+
+print(p0)
+
+```
+
+
+
+## Fix Tick Marks and Colors ##
+
+```{r}
+
+p <- ggplot(asa.data, aes(x=X2014, y=Revenues, label=Sname))
+
+p0 <- p + geom_smooth(method = "lm",
+                  se = FALSE,
+                  color = "gray80") +
+    geom_point(aes(color = Journal)) +
+    geom_text(data=subset(asa.data, Revenues > 7000),
+              size = 2,
+              aes(x=X2014+10,
+                  hjust = 0,
+                  lineheight = 0.7)) +
+    scale_y_continuous(labels = dollar) +
+    scale_color_manual(values = my.colors("bly")) +
+    labs(x="Membership",
+        y="Revenues",
+        color = "Section has own Journal") 
+
+```
+
+
+
+```{r}
+
+print(p0)
+
+```
+
+
+
+## Add a title and move the legend ##
+
+```{r}
+
+p <- ggplot(asa.data, aes(x=X2014, y=Revenues, label=Sname))
+
+p0 <- p + geom_smooth(method = "lm",
+                  se = FALSE,
+                  color = "gray80") +
+    geom_point(aes(color = Journal)) +
+    geom_text(data=subset(asa.data, Revenues > 7000),
+              size = 2,
+              aes(x=X2014+10,
+                  hjust = 0,
+                  lineheight = 0.7)) +
+    scale_y_continuous(labels = dollar) +
+    scale_color_manual(values = my.colors("bly")) +
+    labs(x="Membership",
+        y="Revenues",
+        color = "Section has own Journal") +
+    theme(legend.position = "bottom") +
+    ggtitle("ASA Sections, Membership vs Revenues")
+
+```
+
+
+
+```{r}
+
+print(p0)
+
+```
+
+
+
+## Change the theme ##
+
+```{r}
+
+theme_set(theme_minimal())
+
+print(p0)
+
+
+```
+
+
+
+## Change the theme ##
+
+```{r}
+
+theme_set(theme_light())
+
+print(p0)
+
+
+```
+
+
+
+## Moar themes ##
+
+```{r}
+
+library(ggthemes)
+theme_set(theme_fivethirtyeight())
+
+print(p0)
+
+
+```
+
+
+
+
+## Moar themes ##
+
+```{r}
+theme_set(theme_economist())
+
+print(p0)
+
+
+```
+
+
+
+## Moar themes ##
+
+```{r}
+theme_set(theme_wsj())
+
+print(p0)
+
+
+```
+
+```{r, echo = FALSE}
+
+theme_set(theme_minimal())
+
+```
+
+```
+
+
+
+## Membership trends over time
+
+
+```{r}
+
+library(tidyr)
+library(dplyr)
+
+yrs <- colnames(asa.data) %in% paste("X", 2005:2015, sep="")
+
+data.m <- subset(asa.data, select = c("Sname", colnames(asa.data)[yrs]))
+
+data.m <- gather(data.m, Year, Members, X2005:X2015)
+
+data.m$Year <- as.integer(str_replace(data.m$Year, "X", ""))
+
+```
+
+
+
+
+## Membership trends over time
+
+
+```{r}
+
+trend.tab <- data.m %>% group_by(Year) %>%
+    mutate(yr.tot = sum(Members, na.rm=TRUE)) %>%
+    group_by(Sname) %>%
+    na.omit() %>%
+    mutate(Ave = mean(Members, na.rm=TRUE),
+           Dif = Members - Ave,
+           Pct.All = round((Members/yr.tot*100), 2),
+           Age = length(Members)) %>%
+    group_by(Sname) %>%
+    mutate(Index = (Members / first(Members, order_by = Year))*100,
+           AveInd = mean(Index))
+```
+
+
+
+
+## Membership trends over time
+
+
+```{r}
+
+index.labs <- trend.tab %>%
+    filter(Year == 2015) %>%
+    ungroup() %>%
+    filter(min_rank(desc(Index)) < 12 | min_rank(desc(Index)) > 44)
+
+
+index.low <- trend.tab %>%
+    filter(Year == 2015) %>%
+    ungroup() %>%
+    filter(min_rank(Index) < 12)
+
+
+index.high <- trend.tab %>%
+    filter(Year == 2015) %>%
+    ungroup() %>%
+    filter(min_rank(desc(Index)) < 12)
+
+ind.all <- trend.tab$Sname %in% index.labs$Sname
+ind.low <- trend.tab$Sname %in% index.low$Sname
+ind.high <- trend.tab$Sname %in% index.high$Sname
+
+
+trend.tab$Track.all <- ind.all
+trend.tab$Track.low <- ind.low
+trend.tab$Track.high <- ind.high
+
+```
+
+
+
+
+
+```{r}
+
+library(quantreg)
+
+p <- ggplot(subset(trend.tab, Age==11 & AveInd < 105),
+            aes(x=Year, y=Index, group=Sname, color = Track.low))
+
+p0 <-  p + geom_smooth(method = "rqss", formula = y ~ qss(x), se = FALSE) +
+    geom_hline(yintercept = 100) +
+    geom_text(data=subset(index.low, Age==11 & AveInd < 105),
+              aes(x=Year+0.2, y=Index+rnorm(1, sd=0.8),
+                  label=Sname,
+                  lineheight=0.8),
+              hjust = 0,
+              color = "black",
+              size = 2.9) +
+    expand_limits(x = c(2005:2016)) +
+    scale_color_manual(values = my.colors("bly")[c(3, 1)]) +
+    scale_x_continuous(breaks = c(seq(2005, 2015, 3))) +
+    guides(color = FALSE) +
+    ggtitle("Declining Sections. 2005 = 100")
+
+```
+
+
+
+
+```{r}
+
+print(p0)
+
+```
+
+
+
+#### Simple functions help you out
+
+```{r}
+
+plot.section <- function(section="Culture", x = "Year",
+                         y = "Members", data = trend.tab,
+                         smooth=FALSE){
+    require(ggplot2)
+    require(splines)
+    ## Note use of aes_string() rather than aes() 
+    p <- ggplot(subset(data, Sname==section),
+            aes_string(x=x, y=y))
+
+    if(smooth == TRUE) {
+        p0 <- p + geom_smooth(color = my.colors("bly")[2],
+                              size = 1.2, method = "lm",
+                              formula = y ~ ns(x, 3)) +
+            scale_x_continuous(breaks = c(seq(2005, 2015, 4))) +
+            ggtitle(section)
+    } else {
+    p0 <- p + geom_line(color=my.colors("bly")[2], size=1.2) +
+        scale_x_continuous(breaks = c(seq(2005, 2015, 4))) +
+        ggtitle(section)
+    }
+
+    print(p0)
+}
+
+
+```
+
+
+
+```{r}
+
+plot.section()
+
+```
+
+
+
+
+```{r}
+
+plot.section("Rationality")
+
+```
+
+
+
+```{r}
+
+plot.section("OOW")
+
+```
+
+
+
+```{r}
+
+plot.section("Sexualities", smooth = TRUE)
+
+```
+
+
+
+
+### Note how this function could be made progressively more general
+
+- E.g. calculate breaks from the data
+- Allow `geom_smooth()` arguments to be passed through
+
+
+
+```{r}
+
+plot.section2 <- function(section="Culture", x = "Year",
+                         y = "Members", data = trend.tab,
+                         smooth=FALSE, ...){
+    require(ggplot2)
+    require(splines)
+    ## Note use of aes_string() rather than aes() 
+    p <- ggplot(subset(data, Sname==section),
+            aes_string(x=x, y=y))
+
+    if(smooth == TRUE) {
+        p0 <- p + geom_smooth(color = my.colors("bly")[2],
+                              size = 1.2, ...) + 
+            scale_x_continuous(breaks = c(seq(2005, 2015, 4))) +
+            ggtitle(section)
+        } else {
+    p0 <- p + geom_line(color=my.colors("bly")[2], size=1.2) +
+        scale_x_continuous(breaks = c(seq(2005, 2015, 4))) +
+        ggtitle(section)
+    }
+
+    print(p0)
+}
+
+
+```
+
+
+
+```{r}
+
+plot.section2("Comm/Urban", smooth = TRUE, method = "loess")
+
+```
+
+
+
+
+```{r}
+
+plot.section2("Children", smooth = TRUE, method = "lm", formula = y ~ ns(x, 2))
+
+```
+
+
+
+## Another Example: Apple Sales Data
+
+- `git clone https://github.com/kjhealy/apple`
+
+```{r}
+
+apple.url <- "https://raw.githubusercontent.com/kjhealy/apple/master/data/apple-all-products-quarterly-sales.csv"
+apple.data <- read.csv((url(apple.url)), header = TRUE)
+
+## If you cloned the github repository, launch R in it and then
+## asa.data <-  read.csv("data/asa-section-membership.csv", header=TRUE) 
+
+dim(apple.data)
+head(apple.data)
+
+
+```
+
+
+
+```{r}
+
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(splines)
+library(scales)
+library(grid)
+
+## data <- read.csv("data/apple-all-products-quarterly-sales.csv",
+## header=TRUE)
+
+apple.data$Date <- seq(as.Date("1998/12/31"), as.Date("2015/12/31"), by = "quarter")
+
+apple.data.m <- gather(apple.data, Product, Sales, iPhone:Mac)
+
+```
+
+
+
+```{r}
+
+head(apple.data.m)
+
+```
+
+
+
+```{r}
+
+p <- ggplot(subset(apple.data.m, Product!="iPod" & Period>30),
+            aes(x=Date, y=Sales, color=Product, fill=Product))
+p0 <- p + geom_point(size=1.3) +
+    geom_smooth(size=0.8, se=FALSE, method = "loess") +
+    theme(legend.position="top") +
+    scale_x_date(labels = date_format("%Y"),
+                 breaks=date_breaks("year")) +
+    scale_colour_manual(values=my.colors()) +
+    scale_fill_manual(values=my.colors()) + 
+    labs(x="", y="Sales (millions)") 
+
+```
+
+
+
+```{r}
+
+print(p0)
+
+```
+
+
+
+```{r}
+
+### Convert to time series objects
+ipad <- apple.data.m %>%
+    group_by(Product) %>%
+    filter(Product=="iPad") %>%
+    na.omit() %>%
+    data.frame(.)
+
+ipad.ts <- ts(ipad$Sales, start=c(2010, 2), frequency = 4)
+
+
+iphone <- apple.data.m %>%
+    group_by(Product) %>%
+    filter(Product=="iPhone") %>%
+    na.omit() %>%
+    data.frame(.)
+
+iphone.ts <- ts(iphone$Sales, start=c(2007, 2), frequency = 4)
+
+mac <- apple.data.m %>%
+    group_by(Product) %>%
+    filter(Product=="Mac") %>%
+    na.omit() %>%
+    data.frame(.)
+
+mac.ts <- ts(mac$Sales, start=c(1998, 4), frequency = 4)
+
+```
+
+
+
+```{r}
+
+## Loess decomposition 
+
+iphone.stl <- stl(iphone.ts, s.window = "periodic", t.jump = 1)
+plot(iphone.stl)
+
+```
+
+
+
+#### Redraw the STL plot with GGplot
+
+```{r}
+
+iphone.stl2 <- stl(iphone.ts, s.window = 11, t.jump = 1)
+
+ggiphone.stl <- data.frame(iphone.stl2$time.series)
+
+ggiphone.stl$sales <- apple.data$iPhone %>% na.omit()
+
+ind <- is.na(apple.data$iPhone)
+
+ggiphone.stl$Date <- apple.data$Date[!ind]
+
+ggiphone.stl$Product <- "iPhone"
+
+
+```
+
+ 
+
+#### Redraw the STL plot with GGplot
+
+```{r}
+
+p <- ggplot(ggiphone.stl, aes(x=Date, y=sales))
+p1 <- p + geom_line() + ylab("Data")
+
+p <- ggplot(ggiphone.stl, aes(x=Date, y=trend))
+p2 <- p + geom_line() + ylab("Trend")
+
+p <- ggplot(ggiphone.stl, aes(x=Date, y=seasonal))
+p3 <- p + geom_line() + ylab("Seasonal")
+
+p <- ggplot(ggiphone.stl, aes(x=Date, y=remainder))
+p4 <- p + geom_bar(stat="identity", position="dodge") + ylab("Remainder")
+
+p <- ggplot(ggiphone.stl, aes(x=Date, y=(seasonal/trend)*100))
+p5 <- p + geom_line(stat="identity", position="dodge") + ylab("Seasonal/\nTrend (pct)")
+
+
+```
+
+
+
+#### Redraw the STL plot with GGplot
+
+```{r}
+
+grid.newpage()
+vplayout <- function(x, y) viewport(layout.pos.row = x, layout.pos.col = y)
+
+```
+
+
+
+```{r}
+
+pushViewport(viewport(layout = grid.layout(5, 1)))
+print(p1, vp = vplayout(1, 1))
+print(p2, vp = vplayout(2, 1))
+print(p3, vp = vplayout(3, 1))
+print(p4, vp = vplayout(4, 1))
+print(p5, vp = vplayout(5, 1))
+
+```
+
+
+
+### Try it for the Mac and iPad data
+
+

@@ -134,12 +134,12 @@ the basics of plotting clean data.
 - [Rmd file for the slides](https://github.com/socviz/soc880/blob/gh-pages/week-01/index.Rmd)
 - [Curve Perception Example](snippets/curve-banking.html). 
 
-### Setup 
+#### Setup 
 
 * [Set up Git](https://help.github.com/categories/bootcamp).
 * Jennifer Bryan, [R basics, workspace and working directory, RStudio projects](http://stat545-ubc.github.io/block002_hello-r-workspace-wd-project.html). This is an introduction to the basics of R and RStudio, if you are completely unfamiliar with either. ([Jenny's teaching materials on R](http://stat545-ubc.github.io) are well worth looking at more closely.)
 
-### Optional Reading
+#### Optional Reading
 
 * Kieran Healy. 2011. [Choosing Your Workflow Applications](http://www.kieranhealy.org/files/misc/workflow-apps.pdf). The Political Methodologist 18 (2), 9–18.
 

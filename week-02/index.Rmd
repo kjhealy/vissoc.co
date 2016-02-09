@@ -4,6 +4,10 @@ author      : Kieran Healy
 job         : Duke University
 output:
   html_document:
+    pandoc_args: [
+        "--number-sections"
+    ]
+    md_extensions: +implicit_figures
     theme: cerulean
     highlight: espresso
 ---
@@ -34,14 +38,12 @@ opts_knit$set(kfigr.prefix=TRUE,
 ```
 
 
-## Outline for Today
+- Housekeeping
+- Basic Principles Again
+- Introducing `ggplot`
+- Summarizing a Variable
 
-0. Housekeeping
-1. Basic Principles Again
-2. Introducing `ggplot`
-3. Summarizing a Variable
-
-## Reminder
+# Reminder
 
 - There are two ways to learn R: the easy way and the tedious way. 
 - The problem is that the easy way doesn't work.
@@ -53,8 +55,6 @@ opts_knit$set(kfigr.prefix=TRUE,
 
 
 # Principles Again
-
-
 
 ## Perception
 
@@ -70,31 +70,31 @@ opts_knit$set(kfigr.prefix=TRUE,
 
 
 
-### Hermann Grid Effect
+## Hermann Grid Effect
 
 ![Hermann Grid Effect](../assets/perception-hermann-grid-effect.jpg)
 
 
 
-### Constrast Effects 
+## Constrast Effects 
 
 ![Contrast Effects](../assets/perception-contrast-effects.png)
 
 
 
-### Color makes things Complex
+## Color makes things Complex
 
 ![Color Makes things More Complex](../assets/perception-coloreffects1.png)
 
 
-### What stands out?
+## What stands out?
 
 ![What stands out](../assets/perception-easy-hard.png)
 
 - (Courtesy Miriah Meyer.)
 
 
-### Gestalt Rules
+## Gestalt Rules
 
 ![Gestalt Rules](../assets/perception-gestalt-1-bang-wong.jpg)
 
@@ -109,7 +109,7 @@ opts_knit$set(kfigr.prefix=TRUE,
 
 
 
-## Picking Out a Data Point
+# Picking Out a Data Point
 
 ```{r, echo = FALSE}
 
@@ -168,7 +168,7 @@ p + geom_point(size=3)
 
 ```
 
-### Pick it out by Shape?
+## Pick it out by Shape?
 
 ```{r, echo=FALSE, fig.width=11, fig.height=8.5}
 
@@ -183,7 +183,7 @@ p + geom_point(size=3) +
 
 
 
-### Pick it out by Color?
+## Pick it out by Color?
 
 ```{r, echo=FALSE, fig.width=11, fig.height=8.5}
 
@@ -197,7 +197,7 @@ p + geom_point(size=3) +
 - Highlight by color
 
 
-### Pick it out by Size?
+## Pick it out by Size?
 
 ```{r, echo=FALSE, fig.width=11, fig.height=8.5}
 
@@ -214,7 +214,7 @@ p + geom_point() +
 
 
 
-### How about all three?
+## How about all three?
 
 ```{r, echo=FALSE, fig.width=11, fig.height=8.5}
 
@@ -231,7 +231,7 @@ p + geom_point() +
 - Highlight by all three
 
 
-### Multiple channels of comparison become uninterpretable very fast
+## Multiple channels of comparison become uninterpretable very fast
 
 ```{r, echo=FALSE, fig.width=11, fig.height=8.5}
 
@@ -247,7 +247,7 @@ p + geom_point() +
 
 
 
-### Unless your data has a lot of structure
+## Unless your data has a lot of structure
 
 
 ```{r, echo=FALSE, fig.width=11, fig.height=8.5}
@@ -320,7 +320,7 @@ p <- ggplot(data=my.data,
 
 
 
-### Adding layers to the plot
+## Adding layers to the plot
 
 - What happens when you type `p` at the console and hit return?
 - We need to add a *layer* to the plot. 
@@ -338,21 +338,15 @@ p + geom_point()
 
 
 
-## The Plot-Making Process
+# The Plot-Making Process
 
-#### 0. Start with your data in the right shape
+- 0. Start with your data in the right shape
+- 1. Tell `ggplot` *what* relationships you want to see
+- 2. Tell `ggplot` *how* you want to see them
+- 3. Layer these pictures as needed
+- 4. Fine-tune scales, labels, tick marks, etc
 
-#### 1. Tell `ggplot` *what* relationships you want to see
-
-#### 2. Tell `ggplot` *how* you want to see them
-
-#### 3. Layer these pictures as needed
-
-#### 4. Fine-tune scales, labels, tick marks, etc
-
-
-
-#### This layering process is literally additive
+- This layering process is literally additive
 
 ```{r}
 
@@ -443,7 +437,7 @@ p + geom_point() +
 
 
 
-### Colorless green ideas sleep furiously
+## Colorless green ideas sleep furiously
 
 - `ggplot` implements a "grammar" of graphics, an idea developed by Leland Wilkinson (2005).
 - The grammar gives you rules for how to map
@@ -458,7 +452,7 @@ but they can easily be garbled.
 
 
 
-### More work needed (1)
+## More work needed (1)
 
 ```{r}
 
@@ -468,7 +462,7 @@ p + geom_line()
 
 
 
-### More work needed (2)
+## More work needed (2)
 
 ```{r}
 
@@ -478,7 +472,7 @@ p + geom_bar(stat="identity")
 
 -
 
-### Once you get used to it, this layered grammar lets you build up sophisticated plots
+## Once you get used to it, this layered grammar lets you build up sophisticated plots
 
 
 

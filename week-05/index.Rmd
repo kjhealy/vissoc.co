@@ -4,6 +4,9 @@ author      : Kieran Healy
 job         : Duke University
 output:
   html_document:
+    pandoc_args: [
+        "--number-sections"
+    ]
     md_extensions: +implicit_figures
     theme: cerulean
     highlight: espresso
@@ -33,71 +36,68 @@ opts_knit$set(kfigr.prefix=TRUE,
 
 ```
 
-## Outline for Today
-
-0. Housekeeping
-1. Reviewing the Homework
-2. Git
-3. Maps
+- Housekeeping
+- Reviewing the Homework
+- Git
+- Maps
 
  
-## Maps
+# Maps
 
-### 2012 US Election, Winner by State
+## 2012 US Election, Winner by State
 
 ![Election Map 1](../assets/wk-05-election-state.jpeg)
 
 
 
-### 2012 US Election, Winner by County
+## 2012 US Election, Winner by County
 
 ![Election Map 2](../assets/wk-05-election-county.png)
 
 
-
-### 2012 US Election, Winner by County Share
+## 2012 US Election, Winner by County Share
 
 ![Election Map 3](../assets/wk-05-election-county-share.png)
 
 
 
-### 2012 US Election, Color-Centered
+## 2012 US Election, Color-Centered
 
 ![Election Map 4](../assets/wk-05-election-county-purple.png)
 
 
 
-### 2012 US Election, Color-Centered, Scaled by Population
+## 2012 US Election, Color-Centered, Scaled by Population
 
 ![Election Map 5](../assets/wk-05-election-county-purple-pop.png)
 
 
 
-### 2012 US Election, Electoral College Cartogram
+## 2012 US Election, Electoral College Cartogram
 
 ![Election Map 6](../assets/wk-05-election-electoral-college-cartogram.png)
 
 
 
-### Projections
+# Projections
 
 ![Mercator](../assets/wk-05-mercator.png)
 
 
 
-### Projections
+## Four ways
 
 ![4 US projections](../assets/wk-05-usa-four-ways.jpg)
 
 
 
-### Projections
+### National Atlas
 
 ![US National Atlas](../assets/wk-05-usa-nat-atlas.png)
 
 
 
-## America's Ur-Choropleths
+# America's Ur-Choropleths
 
 ![Population Density](../assets/wk-05-us-pop-density-2014.png)
 
@@ -115,7 +115,7 @@ opts_knit$set(kfigr.prefix=TRUE,
 
 
 
-## Often, you don't need a 'real' map
+# Often, you don't need a 'real' map
 
 
 
@@ -209,9 +209,9 @@ results %>%
 
 
 
-## US County Maps in R
+# US County Maps in R
 
-### From the Terminal
+## From the Terminal
 `git clone https://github.com/kjhealy/us-county.git`
 
 - Or clone it in your browser, or git client

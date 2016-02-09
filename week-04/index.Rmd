@@ -4,6 +4,9 @@ author      : Kieran Healy
 job         : Duke University
 output:
   html_document:
+    pandoc_args: [
+        "--number-sections"
+    ]
     md_extensions: +implicit_figures
     theme: cerulean
     highlight: espresso
@@ -34,17 +37,15 @@ opts_knit$set(kfigr.prefix=TRUE,
 ```
 
 
-## Outline for Today
-
-0. Housekeeping
-1. Pairs Plots
-2. Looking at Data while Modeling
-3. `broom`
-4. A (curse) word about Git
-5. The NZ Electorate data
+-  Housekeeping
+-  Pairs Plots
+-  Looking at Data while Modeling
+-  `broom`
+-  A (curse) word about Git
+- The NZ Electorate data
 
  
-## Organs Data
+# Organs Data
 
 ```{r, get-organdata, echo= TRUE}
 
@@ -60,7 +61,7 @@ organs.data$year <- as.Date(strptime(organs.data$year, format="%Y"))
 
 
 
-#### Pairs Plot
+## Pairs Plot
 
 ```{r, warning=FALSE}
 
@@ -81,7 +82,7 @@ print(p)
 
 
 
-#### Generalized Pairs Plots 
+## Generalized Pairs Plots 
 
 ```{r, warning=FALSE}
 
@@ -100,7 +101,7 @@ print(p)
 ```
 
 
-## Looking While Modeling
+# Looking While Modeling
 
 - Frank Harrell, *Regression Modeling Strategies* (Springer 2001) is an older text, but the visualization principles are good. Two of his useful software libraries for R are `Hmisc` and `rms`.
 
@@ -139,7 +140,7 @@ plot(s, cex.labels = 0.6)
 
 
 
-## Diagnostic Plots for a Poorly-Specified Model
+# Diagnostic Plots for a Poorly-Specified Model
 
 ```{r}
 
@@ -185,7 +186,7 @@ plot(out.lm, which=5)
 
 
 
-### Plotting results with Hmisc
+# Plotting results with Hmisc
 
 ```{r}
 
@@ -203,7 +204,7 @@ plot(summary(out.ols))
 
 
 
-## Tidy Model Output with `broom`
+# Tidy Model Output with `broom`
 
 ```{r}
 
@@ -222,7 +223,7 @@ summary(out.lm)
 
 
 
-### Model objects have a lot of information in them
+## Model objects have a lot of information in them
 
 ```{r}
 
@@ -232,7 +233,7 @@ str(out.lm)
 
 
 
-### `broom` turns summary model output into data frames
+## `broom` turns summary model output into data frames
 
 ```{r}
 
@@ -245,7 +246,7 @@ head(out.tidy)
 
 
 
-### It will also "augment" data frames
+## It will also "augment" data frames
 
 ```{r}
 
@@ -257,7 +258,7 @@ head(out.aug)
 
 
 
-### Tidy output is easy to quickly plot
+## Tidy output is easy to quickly plot
 
 ```{r}
 
@@ -272,7 +273,7 @@ p0 <- p + geom_pointrange(aes(ymin=conf.low,
 
 
 
-### Tidiers are available for many packages
+## Tidiers are available for many packages
 
 ```{r}
 
@@ -291,35 +292,35 @@ p + geom_line() +
 
 
 
-### Model objects have associated `summary` and `plot` methods
+# Model objects have associated `summary` and `plot` methods
 
 
 
-### New Zealand Electorate Data
+## New Zealand Electorate Data
 
 - On GitHub: https://github.com/kjhealy/nz-sex-ratios
 
 
 
-## Excursus on Git
+# Excursus on Git
 
 
-### Git is Horrible
+## Git is Horrible
 
 - But it can help you keep track of what you did
 - It's also where a lot of software development happens
 - So it's worth getting a feel for it
 
 
-## GitHub
+# GitHub
 
-### Simplest GitHub Use Case
+## Simplest GitHub Use Case
 
 - You have no account there.
 - You download stuff from it.
 
 
-### Next Simplest GitHub Use Case
+## Next Simplest GitHub Use Case
 
 - You have an account there.
 - You fork (i.e., copy) things on other people's GitHub accounts to
@@ -328,7 +329,7 @@ p + geom_line() +
 - This kind of confusing, doubled-up, garbage terminology is typical of Git. 
  
 
-### Basic One-Person Regular Git Use Case
+## Basic One-Person Regular Git Use Case
 
 - You have a file under version control.
 - You make a change to it and save the file.
@@ -337,7 +338,7 @@ p + geom_line() +
 repository, with a message saying what you did.
 
 
-### Basic One-Person Regular Git Use Case
+## Basic One-Person Regular Git Use Case
 
 - You have a file under version control.
 - You make a change to it and save the file.
@@ -348,13 +349,13 @@ repository, with a message saying what you did.
 
 
 
-### Tutorial
+## Tutorial
 
 - https://try.github.io/levels/1/challenges/1
 
 
 
-## Back to the New Zealand Data
+# Back to the New Zealand Data
 
 
 

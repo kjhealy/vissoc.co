@@ -4,6 +4,9 @@ author      : Kieran Healy
 job         : Duke University
 output:
   html_document:
+    pandoc_args: [
+        "--number-sections"
+    ]
     md_extensions: +implicit_figures
     theme: cerulean
     highlight: espresso
@@ -33,17 +36,14 @@ opts_knit$set(kfigr.prefix=TRUE,
 
 ```
 
-
-## Outline for Today
-
-0. Housekeeping
-1. Building up plots, again
-2. ggplot themes
-3. Writing a small helper function
-4. Custom plots and layouts
+- Housekeeping
+- Building up plots, again
+- `ggplot` themes
+- Writing a small helper function
+- Custom plots and layouts
 
 
-## Building up Plots, Again
+# Building up Plots, Again
 
 
 ```{r}
@@ -60,7 +60,7 @@ theme_set(theme_gray())
 
 
 
-### ASA Membership & Revenue data
+## ASA Membership & Revenue data
 
 - On Github: [ASA Sections](https://github.com/kjhealy/asa-sections)
 - Or manually: 
@@ -81,7 +81,7 @@ head(asa.data)
 
 
 
-### Quick & Dirty Function for custom colors ###
+## Quick & Dirty Function for custom colors ###
 
 ```{r}
 
@@ -354,7 +354,7 @@ print(p0)
 
 
 
-## Change the theme ##
+# Change the theme #
 
 ```{r}
 
@@ -367,7 +367,7 @@ print(p0)
 
 
 
-## Change the theme ##
+## Change the theme again ##
 
 ```{r}
 
@@ -395,7 +395,7 @@ print(p0)
 
 
 
-## Moar themes ##
+## Still Moar themes ##
 
 ```{r}
 theme_set(theme_economist())
@@ -427,7 +427,7 @@ theme_set(theme_minimal())
 
 
 
-## Membership trends over time
+# Membership trends over time
 
 
 ```{r}
@@ -448,8 +448,9 @@ data.m$Year <- as.integer(str_replace(data.m$Year, "X", ""))
 
 
 
-## Membership trends over time
+# Membership trends over time
 
+## Get the data in shape
 
 ```{r}
 
@@ -465,11 +466,6 @@ trend.tab <- data.m %>% group_by(Year) %>%
     mutate(Index = (Members / first(Members, order_by = Year))*100,
            AveInd = mean(Index))
 ```
-
-
-
-
-## Membership trends over time
 
 
 ```{r}
@@ -541,7 +537,7 @@ print(p0)
 
 
 
-#### Simple functions help you out
+## Simple functions help you out
 
 ```{r}
 
@@ -608,7 +604,7 @@ plot.section("Sexualities", smooth = TRUE)
 
 
 
-### Note how this function could be made progressively more general
+## Note how this function could be made progressively more general
 
 - E.g. calculate breaks from the data
 - Allow `geom_smooth()` arguments to be passed through
@@ -662,7 +658,7 @@ plot.section2("Children", smooth = TRUE, method = "lm", formula = y ~ ns(x, 2))
 
 
 
-## Another Example: Apple Sales Data
+# Another Example: Apple Sales Data
 
 - `git clone https://github.com/kjhealy/apple`
 
@@ -778,7 +774,7 @@ plot(iphone.stl)
 
 
 
-#### Redraw the STL plot with GGplot
+## Redraw the STL plot with GGplot
 
 ```{r}
 
@@ -797,9 +793,7 @@ ggiphone.stl$Product <- "iPhone"
 
 ```
 
- 
 
-#### Redraw the STL plot with GGplot
 
 ```{r}
 
@@ -847,6 +841,6 @@ print(p5, vp = vplayout(5, 1))
 
 
 
-### Try it for the Mac and iPad data
+# Try it for the Mac and iPad data
 
 

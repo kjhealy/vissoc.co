@@ -4,6 +4,9 @@ author      : Kieran Healy
 job         : Duke University
 output:
   html_document:
+    pandoc_args: [
+        "--number-sections"
+    ]
     md_extensions: +implicit_figures
     theme: cerulean
     highlight: espresso
@@ -33,17 +36,15 @@ opts_knit$set(kfigr.prefix=TRUE,
 
 ```
 
-## Outline 
-
-0. Housekeeping
-1. Patterns in Data
-2. Recapping `ggplot` fundamentals
-3. Worked examples with the Gapminder Data
-4. A new dataset
-5. Dot plots and other 1-D summaries
+- Housekeeping
+- Patterns in Data
+- Recapping `ggplot` fundamentals
+- Worked examples with the Gapminder Data
+- A new dataset
+- Dot plots and other 1-D summaries
 
  
-### We're good at seeing patterns in data
+# We're good at seeing patterns in data ... 
 
 ![Looking for Patterns](../assets/wk-03-random-structure.png)
 
@@ -51,9 +52,7 @@ opts_knit$set(kfigr.prefix=TRUE,
 
 
 
-### Maybe a little too good
-
-![Looking for Patterns](../assets/wk-03-random-structure.png)
+## ... Maybe a little too good
 
 - (L) Random 2-D Poisson Process. 
 - (R) Random Process with added spatial anti-correlation.
@@ -61,7 +60,7 @@ opts_knit$set(kfigr.prefix=TRUE,
 
 
 
-## ggplot 
+# ggplot 
 
 ```{r, getdata-1, echo= TRUE}
 
@@ -92,21 +91,16 @@ p + geom_point()
 
 
 
-## The Plot-Making Process
+# The Plot-Making Process in ggplot
 
-#### 0. Start with your data in the right shape
-
-#### 1. Tell `ggplot` *what* relationships you want to see
-
-#### 2. Tell `ggplot` *how* you want to see them
-
-#### 3. Layer these pictures as needed
-
-#### 4. Fine-tune scales, labels, tick marks, etc
+-  0. Start with your data in the right shape
+-  1. Tell `ggplot` *what* relationships you want to see
+-  2. Tell `ggplot` *how* you want to see them
+-  3. Layer these pictures as needed
+-  4. Fine-tune scales, labels, tick marks, etc
 
 
-
-#### Mapping variables to aesthetic features
+## Key idea: Map variables to aesthetic features
 
 - `ggplot` works by building your plot piece by piece
 - The `aes()` function maps *variables* to *aesthetic features* of the plot.
@@ -117,9 +111,7 @@ p + geom_point()
   *variables* in the data will be *represented* by, e.g., colors and
   shapes.
 
-
-
-#### Specify aesthetic mappings all at once, or per geom layer
+## Specify aesthetic mappings all at once, or per geom layer
 
 ```{r}
 p + geom_point(aes(color=continent)) +
@@ -130,7 +122,7 @@ p + geom_point(aes(color=continent)) +
 
 
 
-#### Layer functions have options other than aesthetic mappings. These don't go in inside the aes() function
+## Layer functions have options other than aesthetic mappings. These don't go in inside the aes() function
 
 ```{r}
 
@@ -143,7 +135,7 @@ p + geom_point(aes(color=continent)) +
 
 
 
-#### First geoms, then scales, then labels, theme elements, and titles
+## First geoms, then scales, then labels, theme elements, and titles
 
 ```{r}
 
@@ -163,7 +155,7 @@ p + geom_point(aes(color=continent)) +
 
 
 
-#### When ggplot misbehaves or gives unexpected output, it is usually because the mapping you have specified is not what you need, or the variable is not appropriate to the aesthetic feature in some way 
+## When ggplot misbehaves or gives unexpected output, it is usually because the mapping you have specified is not what you need, or the variable is not appropriate to the aesthetic feature in some way 
 
 
 
@@ -181,7 +173,7 @@ p + geom_line() +
 
 
 
-##### Put year on the x-axis
+## Put year on the x-axis
 
 ```{r}
 
@@ -199,7 +191,7 @@ p + geom_line() +
 
 
 
-##### Put year on the x-axis
+## Put year on the x-axis
 
 ```{r}
 
@@ -242,7 +234,7 @@ p + geom_line(aes(group=country,
 
 
 
-### Let's just look at Asia
+# Let's just look at Asia
 
 
 ```{r}
@@ -256,7 +248,7 @@ p + geom_line(aes(group=country,
 
 
 
-### Better colors
+## Better colors
 
 
 ```{r}
@@ -271,7 +263,7 @@ p + geom_line(aes(group=country,
 
 
 
-### Better Legend Labels
+## Better Legend Labels
 
 ```{r}
 
@@ -286,7 +278,7 @@ p + geom_line(aes(group=country,
 
 
 
-### Better Legend Title and Position
+## Better Legend Title and Position
 
 ```{r}
 
@@ -302,7 +294,7 @@ p + geom_line(aes(group=country,
 
 
 
-### Make the Salient category the first one
+## Make the Salient category the first one
 
 ```{r}
 
@@ -319,7 +311,7 @@ p + geom_line(aes(group=country,
 
 
 
-### And add labels
+## And add labels
 
 ```{r}
 
@@ -339,11 +331,11 @@ p + geom_line(aes(group=country,
 
 
 
-#### To see the logic behind each plot, peel each layer off from the last one to the first. See which parts of the plot change, or disappear. 
+## To see the logic behind each plot, peel each layer off from the last one to the first. See which parts of the plot change, or disappear. 
 
 
 
-## A New Dataset
+# A New Dataset
 
 ```{r, get-organdata, echo= TRUE}
 
@@ -360,7 +352,7 @@ organs.data$year <- as.Date(strptime(organs.data$year, format="%Y"))
 
 
 
-### Similar country-year structure to before
+## Similar country-year structure to before
 
 - Before looking at the next few slides, what can you get out of this dataset?
 - Try examining it and making a few plots
@@ -411,7 +403,6 @@ p + geom_line(aes(group=country)) +
 
 ```{r}
 
-library(magrittr)
 library(dplyr)
 
 
@@ -461,7 +452,7 @@ p + geom_point(size=3) +
 
 
 
-## Alternatively 
+# Alternatively 
 
 ```{r}
 p <- ggplot(by.country, aes(x=donors, y=reorder(country, donors)))
@@ -476,7 +467,7 @@ p + geom_point(size=3) +
 
 
 
-#### Cleveland Dotplots of this sort are a very useful way of summarizing 1-D data that comes in categories
+## Cleveland Dotplots of this sort are a very useful way of summarizing 1-D data that comes in categories
 
 - Consider them in preference to bar or column charts
 - Keeping the categories on the y-axis is often a good idea
@@ -485,7 +476,7 @@ p + geom_point(size=3) +
 
 
 
-#### Summary Boxplots
+## Summary Boxplots 1
 
 ```{r}
 
@@ -502,9 +493,7 @@ p + geom_boxplot() +
 
 ```
 
-
-
-#### Summary Boxplots
+## Summary Boxplots 2
 
 ```{r}
 
@@ -523,7 +512,7 @@ p + geom_boxplot() +
 
 
 
-#### Summary Boxplots
+## Summary Boxplots 3
 
 ```{r}
 
@@ -544,7 +533,7 @@ p + geom_boxplot(aes(fill=consent.law)) +
 
 
 
-#### 1-D point summaries
+## 1-D point summaries
 
 ```{r}
 
@@ -562,8 +551,7 @@ p + geom_point(aes(color=consent.law)) +
 ```
 
 
-
-#### Add a little jitter
+## Add a little jitter
 
 ```{r}
 
@@ -581,11 +569,7 @@ p + geom_jitter(aes(color=consent.law)) +
 ```
 
 
-
-
-
-
-#### Fine-tune the jittering
+## Fine-tune the jittering
 
 ```{r}
 

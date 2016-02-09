@@ -4,6 +4,9 @@ author      : Kieran Healy
 job         : Duke University
 output:
   html_document:
+    pandoc_args: [
+        "--number-sections"
+    ]
     md_extensions: +implicit_figures
     theme: cerulean
     highlight: espresso
@@ -32,22 +35,17 @@ opts_knit$set(kfigr.prefix=TRUE,
 
 ```
 
-# Data Visualization Week 1
-
-
-## Outline 
-
-0. Housekeeping
-1. Motivation and Goals
-2. Up and running with R and RStudio
-3. What we are Good and Bad at Seeing
-4. A First Figure in R
+- Outline 
+- Housekeeping
+- Motivation and Goals
+- Up and running with R and RStudio
+- A First Figure in R
 
  
 
-## Housekeeping
+# Housekeeping
 
-### [http://socviz.github.io/soc880/](http://socviz.github.io/soc880/)
+## [http://socviz.github.io/soc880/](http://socviz.github.io/soc880/)
 
 - Slides, code, and other material will be available there.
 - The site is hosted on GitHub.
@@ -55,7 +53,7 @@ opts_knit$set(kfigr.prefix=TRUE,
 - Soon we'll get you access for private repositories where you can put your assignments.
 
 
-## We want to create pictures of data that people, including ourselves, can look at and learn from
+# We want to create pictures of data that people, including ourselves, can look at and learn from
 
 - Slides and other material for this class will be fairly interactive and hands-on. More like working notes than the sort of thing you would present as finished work, or to an audience
 - Code you can use in R will look like this:
@@ -73,7 +71,7 @@ data
 
 
 
-## How to take notes in this class
+# How to take notes in this class
 
 - Use a text editor. Not MS Word. It's easiest to work with RStudio. Create a new project there.
 - We will want to alternate back and forth between bits of code and explanatory notes to ourselves, commentary, or other material. We need a format to do this in that still allows us to work in R easily. 
@@ -117,9 +115,9 @@ data
 
 
 
-## When working in R ...
+# When working in R ...
 
-### A little organization goes a long way
+## A little organization goes a long way
 
 - Make sure you know where you are.
 
@@ -142,14 +140,14 @@ getwd()
 ![A more complex project](../assets/wk-01-org-2.png)
 
 
-### Everything has a *name*
+## Everything has a *name*
 
 - Some names are forbidden. These include words like `FALSE` and `TRUE`, logical operators and programming words like `Inf`, `for`, `else`, `break`, `function`, and words for special entities like `NA` and `NaN`.
 - Some names you should not use. These include words that are also the names of very widely used objects like `q` or `c` or `mean`, or `pi`, or `range`, or `var`.
 - All names are case sensitive.
 
 
-### Everything is an *object*
+## Everything is an *object*
 
 - Objects are built in to R, are added via libraries, or are created by the user.
 
@@ -166,7 +164,7 @@ summary(my_numbers)
 ```
 
 
-### Every object has a *class*
+## Every object has a *class*
 
 - Depending on what type of object something is, you can extract bits of information from it.
 
@@ -179,7 +177,7 @@ class(summary)
 ```
 
 
-### Functions take Data (or Functions) as inputs, and produce outputs
+## Functions take Data (or Functions) as inputs, and produce outputs
 
 ```{r functions, echo=TRUE}
 
@@ -208,7 +206,7 @@ sd(my_numbers)
 
 ```
 
-### If you're not sure what something is, ask for its class:
+## If you're not sure what something is, ask for its class:
 
 ```{r getclass}
 
@@ -220,7 +218,7 @@ class(table)
 
 ```
 
-### If you're not sure what something is, ask for its structure
+## If you're not sure what something is, ask for its structure
 
 ```{r str}
 
@@ -234,26 +232,26 @@ str(summary)
 
 
 
-## Before we get lost in the Weeds, let's look at some pictures
+# Before we get lost in the Weeds, let's look at some pictures
 
 - We will be looking at R objects and functions in more detail later, and writing our own.
 
 
 
 
-### What Data Values are Displayed in this Figure?
+## What Data Values are Displayed in this Figure?
 
 ![A 3-D Column Chart created in Excel for Mac](../assets/wk-01-excel-3d-column-chart.png)
 
 
 
-### The answer may surprise you. 
+## The answer may surprise you. 
 
 ![Excel 3-D Column Chart with Values shown](../assets/wk-01-excel-3d-column-chart-values.png)
 
 
 
-### What about this one?
+## What about this one?
 
 ![A 3-D Pie Chart created in Excel for Mac](../assets/wk-01-excel-3d-pie-chart.png)
 
@@ -263,7 +261,7 @@ str(summary)
 ![A 3-D Pie Chart created in Excel for Mac](../assets/wk-01-excel-3d-pie-chart-values.png)
 
 
-## What Makes Bad Figures Bad? 
+# What Makes Bad Figures Bad? 
 
 - Sometimes, it's because they mislead or lend themselves to misinterpretation, either accidentally or on purpose. 
 - Sometimes, it's just aesthetics. The chart is fine but it looks terrible.
@@ -286,11 +284,6 @@ str(summary)
 ## William Cleveland
 
 ![Cleveland's visual tasks](../assets/wk-01-cleveland-tasks.png)
-
-
-
-
-## William Cleveland
 
 - It is difficult to compare length judgments without a common baseline.
 - People misjudge *areas* easily. Area judgments are less accurate than length judgments or position judgments.
@@ -334,7 +327,7 @@ Ew.
 - We just adjusted the width of the figure, nothing else.
 
 
-## Let's get some Data ...
+# Let's get some Data ...
 
 ```{r getdata-1, echo = TRUE}
 
@@ -403,7 +396,7 @@ p + geom_point()
 
 
 
-## Homework
+# Homework
 
 1. Create an RMarkdown file for your work if you haven't already.
 2. Look again at the data.

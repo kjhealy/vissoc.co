@@ -156,7 +156,7 @@ p + geom_line() +
 
 
 
-## Put year on the x-axis
+## Can we put year on the x-axis?
 
 ```{r}
 
@@ -168,13 +168,10 @@ p + geom_line() +
 
 ```
 
+
 - Hmm, not much better
 - Also, why are there no x labels for years?
-
-
-
-
-## Put year on the x-axis
+- It's the scale instruction that we copied from the previous code chunk. Remove it:
 
 ```{r}
 
@@ -198,10 +195,7 @@ p + geom_line(aes(group=country))
 
 ```
 
-- More promising
-
-
-
+- More promising. The `group` aesthetic tells `ggplot` what it needs to know about the structure of the data in order to draw sensible lines. We can add more information along these lines, mapping the property of color to the variable `continent`, for example. 
 
 ```{r}
 

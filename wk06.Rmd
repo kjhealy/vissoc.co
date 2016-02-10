@@ -388,27 +388,11 @@ print(p0)
 
 ```
 
-
-
-## Moar themes ##
-
-```{r}
-theme_set(theme_wsj())
-
-print(p0)
-
-
-```
-
 ```{r, echo = FALSE}
 
 theme_set(theme_minimal())
 
 ```
-
-```
-
-
 
 # Membership trends over time
 

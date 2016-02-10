@@ -28,6 +28,8 @@ opts_knit$set(kfigr.prefix=TRUE,
 
 # Maps
 
+- Choropleth maps are visually striking, but can also be a bit misleading. Consider some ways of representing election results. The fundamental issue is that people vote, not places.
+
 ## 2012 US Election, Winner by State
 
 ![Election Map 1](assets/wk-05-election-state.jpeg)
@@ -82,17 +84,21 @@ opts_knit$set(kfigr.prefix=TRUE,
 
 # America's Ur-Choropleths
 
+In the U.S. case, the fact that states and counties vary widely in size and population means that they can be a bit misleading. And they make it easy to present a geographical distribution to insinuate an explanation. Together the results can be frustrating. Gabriel Rossman remarked to me a while ago that most choropleth maps of the U.S. for whatever variable in effect show population density more than anything else. (There's an [xkcd strip](https://xkcd.com/1138/) about this, too.) The other big variable, in the U.S. case, is Percent Black. Between the two of them, population density and percent black will do a lot to obliterate many a suggestively-patterned map of the United States. Those two variables aren't explanations of anything in isolation, but if it turns out it's more useful to know one or both of them instead of the thing you're plotting, you probably want to reconsider your theory.
+
+So as a public service, here are America's two ur-choropleths, by county. First, Population Density.
+
 ![Population Density](assets/wk-05-us-pop-density-2014.png)
 
-
+And Percent Black:
 
 ![Percent Black](assets/wk-05-us-pct-black-2013.png)
 
-
+Here we see a recently-tweeted map that makes the point. It shows county-level estimates of gun-related suicides.
 
 ![Gun Suicides](assets/wk-05-roser-gun-suicides.png)
 
-
+Here's a map I drew that just shows population density, but reverse-coded so that the darker areas are the ones with fewer people.
 
 ![Reverse-Coded Pop Density](assets/wk-05-us-pop-density-reverse-coded-2014.png)
 
@@ -100,6 +106,7 @@ opts_knit$set(kfigr.prefix=TRUE,
 
 # Often, you don't need a 'real' map
 
+A consequence of the choropleth issue is that, especially for US State-level data, you may not need a fancy map at all.
 
 
 ## Statebins, by Bob Rudis

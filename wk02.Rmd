@@ -1,15 +1,5 @@
 ---
 title       : "Getting Used to ggplot"
-author      : Kieran Healy
-job         : Duke University
-output:
-  html_document:
-    pandoc_args: [
-        "--number-sections"
-    ]
-    md_extensions: +implicit_figures
-    theme: cerulean
-    highlight: espresso
 ---
 
 ```{r Setup, include=FALSE, results='hide', warning=FALSE}
@@ -17,8 +7,8 @@ output:
 library(devtools)
 library(ggplot2)
 
-opts_chunk$set(fig.path="../assets/wk02-fig-",
-               cache.path="../cache/wk02-working-",
+opts_chunk$set(fig.path="assets/wk02-fig-",
+               cache.path="cache/wk02-working-",
                dev=c("png","pdf"),
                fig.width=6,
                fig.height=5,
@@ -37,13 +27,7 @@ opts_knit$set(kfigr.prefix=TRUE,
 
 ```
 
-
-- Housekeeping
-- Basic Principles Again
-- Introducing `ggplot`
-- Summarizing a Variable
-
-# Reminder
+# Learning R
 
 - There are two ways to learn R: the easy way and the tedious way. 
 - The problem is that the easy way doesn't work.
@@ -54,7 +38,7 @@ opts_knit$set(kfigr.prefix=TRUE,
 - For example, [Try R](http://tryr.codeschool.com/levels/1/challenges/1).
 
 
-# Principles Again
+# Visualization Principles Again
 
 ## Perception
 
@@ -72,36 +56,36 @@ opts_knit$set(kfigr.prefix=TRUE,
 
 ## Hermann Grid Effect
 
-![Hermann Grid Effect](../assets/perception-hermann-grid-effect.jpg)
+![Hermann Grid Effect](assets/perception-hermann-grid-effect.jpg)
 
 
 
 ## Constrast Effects 
 
-![Contrast Effects](../assets/perception-contrast-effects.png)
+![Contrast Effects](assets/perception-contrast-effects.png)
 
 
 
 ## Color makes things Complex
 
-![Color Makes things More Complex](../assets/perception-coloreffects1.png)
+![Color Makes things More Complex](assets/perception-coloreffects1.png)
 
 
 ## What stands out?
 
-![What stands out](../assets/perception-easy-hard.png)
+![What stands out](assets/perception-easy-hard.png)
 
 - (Courtesy Miriah Meyer.)
 
 
 ## Gestalt Rules
 
-![Gestalt Rules](../assets/perception-gestalt-1-bang-wong.jpg)
+![Gestalt Rules](assets/perception-gestalt-1-bang-wong.jpg)
 
 - Bang Wong, _Nature Methods_ 7 863 (2010)
 
 
-![Gestalt Rules](../assets/perception-gestalt-2-bang-wong.jpg)
+![Gestalt Rules](assets/perception-gestalt-2-bang-wong.jpg)
 
 - Bang Wong, _Nature Methods_ 7 863 (2010)
 

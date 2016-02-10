@@ -1,15 +1,5 @@
 ---
 title       : Looking at Data
-author      : Kieran Healy
-job         : Duke University
-output:
-  html_document:
-    pandoc_args: [
-        "--number-sections"
-    ]
-    md_extensions: +implicit_figures
-    theme: cerulean
-    highlight: espresso
 ---
 
 ```{r Setup, include=FALSE, results='hide', warning=FALSE}
@@ -17,8 +7,8 @@ output:
 library(devtools)
 library(ggplot2)
 
-opts_chunk$set(fig.path="../assets/wk03-fig-",
-               cache.path="../cache/wk03-working-",
+opts_chunk$set(fig.path="assets/wk03-fig-",
+               cache.path="cache/wk03-working-",
                dev=c("png","pdf"),
                fig.width=6,
                fig.height=5,
@@ -36,17 +26,10 @@ opts_knit$set(kfigr.prefix=TRUE,
 
 ```
 
-- Housekeeping
-- Patterns in Data
-- Recapping `ggplot` fundamentals
-- Worked examples with the Gapminder Data
-- A new dataset
-- Dot plots and other 1-D summaries
-
  
 # We're good at seeing patterns in data ... 
 
-![Looking for Patterns](../assets/wk-03-random-structure.png)
+![Looking for Patterns](assets/wk-03-random-structure.png)
 
 - (Images: Peter Coles)
 
@@ -155,9 +138,9 @@ p + geom_point(aes(color=continent)) +
 
 
 
-## When ggplot misbehaves or gives unexpected output, it is usually because the mapping you have specified is not what you need, or the variable is not appropriate to the aesthetic feature in some way 
+## When ggplot misbehaves 
 
-
+- ... or gives unexpected output, it is usually because the mapping you have specified is not what you need, or the variable is not appropriate to the aesthetic feature in some way 
 
 ```{r}
 
@@ -331,7 +314,9 @@ p + geom_line(aes(group=country,
 
 
 
-## To see the logic behind each plot, peel each layer off from the last one to the first. See which parts of the plot change, or disappear. 
+## Layer logic 
+
+- To see the logic behind each plot, get in the habit of working backwards, "peeling" each layer off (by deleting the code) from the last layer to the first. See which parts of the plot change, or disappear. 
 
 
 
@@ -414,7 +399,7 @@ by.country
 
 ```
 
-
+## Ordered dotplots
 
 ```{r}
 
@@ -452,7 +437,7 @@ p + geom_point(size=3) +
 
 
 
-# Alternatively 
+# Another way 
 
 ```{r}
 p <- ggplot(by.country, aes(x=donors, y=reorder(country, donors)))
@@ -467,7 +452,8 @@ p + geom_point(size=3) +
 
 
 
-## Cleveland Dotplots of this sort are a very useful way of summarizing 1-D data that comes in categories
+- Cleveland Dotplots of this sort are a very useful way of summarizing
+  1-D data that comes in categories
 
 - Consider them in preference to bar or column charts
 - Keeping the categories on the y-axis is often a good idea

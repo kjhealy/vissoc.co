@@ -1,14 +1,5 @@
 ---
 title: 'Soc 880: Data Visualization'
-author:
-- name: Kieran Healy
-  affiliation: Duke University
-  email: kjhealy@soc.duke.edu
-output:
-  html_document:
-    md_extensions: +implicit_figures
-    theme: cerulean
-    highlight: espresso  
 ---
 
 ```{r Cleanup, include=FALSE, cache=FALSE}
@@ -130,16 +121,15 @@ the basics of plotting clean data.
 * Some very general Principles of data visualization and statistical graphics. 
 * A simple worked example.
 
-- [Week 1 Notes](week-01/index.html)
-- [Rmd file for the notes](week-01/index.Rmd)
-- [Curve Perception Example](snippets/curve-banking.html). 
+- [Week 1 Notes](wk01.html)
+- [Rmd file for the notes](wk01.Rmd)
 
-#### Setup 
+* _Setup_ 
 
 * [Set up Git](https://help.github.com/categories/bootcamp).
 * Jennifer Bryan, [R basics, workspace and working directory, RStudio projects](http://stat545-ubc.github.io/block002_hello-r-workspace-wd-project.html). This is an introduction to the basics of R and RStudio, if you are completely unfamiliar with either. ([Jenny's teaching materials on R](http://stat545-ubc.github.io) are well worth looking at more closely.)
 
-#### Optional Reading
+* _Optional Reading_ 
 
 * Kieran Healy. 2011. [Choosing Your Workflow Applications](http://www.kieranhealy.org/files/misc/workflow-apps.pdf). The Political Methodologist 18 (2), 9–18.
 
@@ -154,8 +144,8 @@ the basics of plotting clean data.
   them to be detailed and require study.
 * Working with `ggplot`: data, layers, and mappings. 
 
-- [Week 2 Notes](week-02/index.html)
-- [Rmd file for the notes](week-02/index.Rmd)
+- [Week 2 Notes](wk02.html)
+- [Rmd file for the notes](wk02.Rmd)
 
 
 ## Week 3: Exploring Datastets
@@ -165,37 +155,37 @@ the basics of plotting clean data.
 * 1-D summaries; 
 * Effective use of Categorical Variables, Facets, and Small-Multiples
 
-- [Week 3 Notes](week-03/index.html)
-- [Rmd file for the notes](week-03/index.Rmd)
+- [Week 3 Notes](wk03.html)
+- [Rmd file for the notes](wk03.Rmd)
 
 
-## Week 4: Presenting Results from Models
+## Week 4: Presenting Results 
 
 * Tidying model output with `broom`.
 * Model estimates, error bars, confidence intervals, predicted probabilities.
 * Showing data and models together.
 * Comparing multiple estimates.  
 
-- [Week 4 Notes](week-04/index.html)
-- [Rmd file for the notes](week-04/index.Rmd)
+- [Week 4 Notes](wk04.html)
+- [Rmd file for the notes](wk04.Rmd)
 
 
 ## Week 5: Maps 
 
 * Maps and Map Projections 
 
-- [Week 5 Notes](week-05/index.html)
-- [Rmd file for the notes](week-05/index.Rmd)
+- [Week 5 Notes](wk05.html)
+- [Rmd file for the notes](wk05.Rmd)
 
 
-## Week 6: Refining Plots for Presentation
+## Week 6: Refining Plots 
 
 * Building up plots, again.
 * Annotation, themes, integration with page or slides.
 * Helper functions
 
-- [Week 6 Notes](week-06/index.html)
-- [Rmd file for the notes](week-06/index.Rmd)
+- [Week 6 Notes](wk06.html)
+- [Rmd file for the notes](wk06.Rmd)
 
 
 ## Week 7: Presentations

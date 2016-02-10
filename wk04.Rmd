@@ -1,15 +1,5 @@
 ---
-title       : Data and Models
-author      : Kieran Healy
-job         : Duke University
-output:
-  html_document:
-    pandoc_args: [
-        "--number-sections"
-    ]
-    md_extensions: +implicit_figures
-    theme: cerulean
-    highlight: espresso
+title       : Data and Models    
 ---
 
 ```{r Setup, include=FALSE, results='hide', warning=FALSE}
@@ -17,8 +7,8 @@ output:
 library(devtools)
 library(ggplot2)
 
-opts_chunk$set(fig.path="../assets/wk04-fig-",
-               cache.path="../cache/wk04-working-",
+opts_chunk$set(fig.path="assets/wk04-fig-",
+               cache.path="cache/wk04-working-",
                dev=c("png","pdf"),
                fig.width=6,
                fig.height=5,
@@ -35,14 +25,6 @@ opts_knit$set(kfigr.prefix=TRUE,
               kfigr.link=FALSE)
 
 ```
-
-
--  Housekeeping
--  Pairs Plots
--  Looking at Data while Modeling
--  `broom`
--  A (curse) word about Git
-- The NZ Electorate data
 
  
 # Organs Data
@@ -65,7 +47,7 @@ organs.data$year <- as.Date(strptime(organs.data$year, format="%Y"))
 
 ```{r, warning=FALSE}
 
-## install.packages("GGally")
+install.packages("GGally")
 library(GGally)
 
 my.vars <- c("donors", "pop", "gdp",
@@ -75,7 +57,7 @@ my.vars <- c("donors", "pop", "gdp",
 p <- ggpairs(subset(organs.data, select=my.vars),
         upper=list(continuous="smooth"),
         lower=list(continuous="points"))
-print(p)
+p
 #dev.off()
 
 ```
@@ -314,13 +296,13 @@ p + geom_line() +
 
 # GitHub
 
-## Simplest GitHub Use Case
+## Simplest GitHub 
 
 - You have no account there.
 - You download stuff from it.
 
 
-## Next Simplest GitHub Use Case
+## Next Simplest GitHub  
 
 - You have an account there.
 - You fork (i.e., copy) things on other people's GitHub accounts to
@@ -328,15 +310,6 @@ p + geom_line() +
 - Then you clone (i.e., copy, or download) them to your laptop.
 - This kind of confusing, doubled-up, garbage terminology is typical of Git. 
  
-
-## Basic One-Person Regular Git Use Case
-
-- You have a file under version control.
-- You make a change to it and save the file.
-- You stage or `add` a snapshot of the changed files, 
-- Then you `commit` the snapshot of changes to the
-repository, with a message saying what you did.
-
 
 ## Basic One-Person Regular Git Use Case
 

@@ -1,15 +1,5 @@
 ---
 title       : Maps
-author      : Kieran Healy
-job         : Duke University
-output:
-  html_document:
-    pandoc_args: [
-        "--number-sections"
-    ]
-    md_extensions: +implicit_figures
-    theme: cerulean
-    highlight: espresso
 ---
 
 ```{r Setup, include=FALSE, results='hide', warning=FALSE}
@@ -17,8 +7,8 @@ output:
 library(devtools)
 library(ggplot2)
 
-opts_chunk$set(fig.path="../assets/wk05-fig-",
-               cache.path="../cache/wk05-working-",
+opts_chunk$set(fig.path="assets/wk05-fig-",
+               cache.path="cache/wk05-working-",
                dev=c("png","pdf"),
                fig.width=6,
                fig.height=5,
@@ -35,83 +25,76 @@ opts_knit$set(kfigr.prefix=TRUE,
               kfigr.link=FALSE)
 
 ```
-
-- Housekeeping
-- Reviewing the Homework
-- Git
-- Maps
-
  
 # Maps
 
 ## 2012 US Election, Winner by State
 
-![Election Map 1](../assets/wk-05-election-state.jpeg)
+![Election Map 1](assets/wk-05-election-state.jpeg)
 
 
 
 ## 2012 US Election, Winner by County
 
-![Election Map 2](../assets/wk-05-election-county.png)
+![Election Map 2](assets/wk-05-election-county.png)
 
 
 ## 2012 US Election, Winner by County Share
 
-![Election Map 3](../assets/wk-05-election-county-share.png)
+![Election Map 3](assets/wk-05-election-county-share.png)
 
 
 
 ## 2012 US Election, Color-Centered
 
-![Election Map 4](../assets/wk-05-election-county-purple.png)
+![Election Map 4](assets/wk-05-election-county-purple.png)
 
 
 
 ## 2012 US Election, Color-Centered, Scaled by Population
 
-![Election Map 5](../assets/wk-05-election-county-purple-pop.png)
+![Election Map 5](assets/wk-05-election-county-purple-pop.png)
 
 
 
 ## 2012 US Election, Electoral College Cartogram
 
-![Election Map 6](../assets/wk-05-election-electoral-college-cartogram.png)
+![Election Map 6](assets/wk-05-election-electoral-college-cartogram.png)
 
 
 
 # Projections
 
-![Mercator](../assets/wk-05-mercator.png)
+![Mercator](assets/wk-05-mercator.png)
+
+
+## Four views of the US
+
+![4 US projections](assets/wk-05-usa-four-ways.jpg)
 
 
 
-## Four ways
+## National Atlas
 
-![4 US projections](../assets/wk-05-usa-four-ways.jpg)
-
-
-
-### National Atlas
-
-![US National Atlas](../assets/wk-05-usa-nat-atlas.png)
+![US National Atlas](assets/wk-05-usa-nat-atlas.png)
 
 
 
 # America's Ur-Choropleths
 
-![Population Density](../assets/wk-05-us-pop-density-2014.png)
+![Population Density](assets/wk-05-us-pop-density-2014.png)
 
 
 
-![Percent Black](../assets/wk-05-us-pct-black-2013.png)
+![Percent Black](assets/wk-05-us-pct-black-2013.png)
 
 
 
-![Gun Suicides](../assets/wk-05-roser-gun-suicides.png)
+![Gun Suicides](assets/wk-05-roser-gun-suicides.png)
 
 
 
-![Reverse-Coded Pop Density](../assets/wk-05-us-pop-density-reverse-coded-2014.png)
+![Reverse-Coded Pop Density](assets/wk-05-us-pop-density-reverse-coded-2014.png)
 
 
 
@@ -211,9 +194,13 @@ results %>%
 
 # US County Maps in R
 
+Work through the US county R code: 
+
 ## From the Terminal
 `git clone https://github.com/kjhealy/us-county.git`
 
 - Or clone it in your browser, or git client
 
+## See also 
 
+- The code and data used to produce the maps in this post: [The Federal Government Owns a Lot of Land](http://kieranhealy.org/blog/archives/2016/01/03/the-federal-government-owns-a-lot-of-land/)

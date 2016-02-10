@@ -1,0 +1,13 @@
+html_document:
+  self_contained: false
+  lib_dir: libs
+  pandoc_args: [
+    "--number-sections"
+    ]
+  md_extensions: +implicit_figures
+  theme: cerulean
+  highlight: espresso
+  toc: true
+  toc_float:
+    collapsed: false
+    smooth_scroll: false

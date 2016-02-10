@@ -419,11 +419,6 @@ data.m$Year <- as.integer(str_replace(data.m$Year, "X", ""))
 
 ```
 
-
-
-
-# Membership trends over time
-
 ## Get the data in shape
 
 ```{r}
@@ -503,8 +498,8 @@ p0 <-  p + geom_smooth(method = "rqss", formula = y ~ qss(x), se = FALSE) +
 
 
 
-```{r}
-
+```{r, fig.width=8, fig.height=6}
+theme_set(theme_minimal())
 p0
 
 ```

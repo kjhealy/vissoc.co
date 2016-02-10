@@ -249,7 +249,10 @@ p <- ggplot(out.tidy, aes(y=estimate,
 p0 <- p + geom_pointrange(aes(ymin=conf.low,
                         ymax=conf.high)) +
     geom_hline(aes(yintercept=0)) +
+    labs(x="", y="Estimate") + 
     coord_flip()
+    
+print(p0)    
 
 ```
 

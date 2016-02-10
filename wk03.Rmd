@@ -89,12 +89,13 @@ p + geom_point()
 - The `aes()` function maps *variables* to *aesthetic features* of the plot.
 - The `x` and `y` values are the most obvious ones.
 - Other aesthetic mappings include, e.g., `color`, `shape`, and `size`.
-- These mappings are not *directly* specifying what specific, e.g.,
-  colors or shapes will be on the plot. Rather they say which
-  *variables* in the data will be *represented* by, e.g., colors and
-  shapes.
+- These mappings are not *directly* specifying what particular 
+  colors, or shapes, or sizes will be on the plot. Rather they say which
+  *variables* in the data will be *represented* by, e.g., colors, or shapes, or sizes.
 
-## Specify aesthetic mappings all at once, or per geom layer
+## Specify aesthetic mappings 
+
+- You can do this all at once, or per layer. 
 
 ```{r}
 p + geom_point(aes(color=continent)) +
@@ -105,7 +106,9 @@ p + geom_point(aes(color=continent)) +
 
 
 
-## Layer functions have options other than aesthetic mappings. These don't go in inside the aes() function
+## Layer functions 
+
+- The various `geoms` have options other than aesthetic mappings, too. These don't go inside the aes() function. 
 
 ```{r}
 
@@ -116,9 +119,17 @@ p + geom_point(aes(color=continent)) +
 
 ```
 
+- Notice here how the `color` and `size` options are not connected to any particular variable---they are just setting the color of and width of the line generically. This is a common source of confusion with `ggplot`.
 
 
-## First geoms, then scales, then labels, theme elements, and titles
+## Build up your plot layer by layer 
+
+- First specify the data source and basic variable mappings.  
+- Then layer on geoms, 
+- ... then scales, 
+- ... then labels, 
+- ... theme elements, 
+- ... titles and other refinements.
 
 ```{r}
 
@@ -154,8 +165,6 @@ p + geom_line() +
 
 - What's wrong with this picture?
 
-
-
 ## Can we put year on the x-axis?
 
 ```{r}
@@ -181,8 +190,10 @@ p + geom_line()
 
 ```
 
-- Fix the scale. 
-- The plot is still meaningless, unfortunately
+- That fixed the scale. 
+- The plot is still meaningless, unfortunately.
+- The reason is that the country-year structure of the data can't sensibly be graphed as a line: for every year we have observations from dozens of countries. But because we've just told ggplot's `geom_line` function that `x=year` and `y=lifeExp`, it doesn't know anything about the country-level structure in the data frame. So it's trying to join up all the lines for any particular year, in the order they appear in the dataset by country. The result is meaningless when plotted. 
+- We can tell the `geom_line` function about this country-level structure by using the `group` aesthetic.
 
 
 
@@ -365,7 +376,7 @@ p + geom_line(aes(group=country,
 
 ```
 
-
+- As an alternative to graphing differences in Consent Law by color, we could instead split the plot in two, with one panel for Informed Consent countries and one panel for Presumed Consent countries. This is called *faceting*, and is a powerful method for generating comparative and "small-multiple" plots. 
 
 ```{r}
 
@@ -376,6 +387,7 @@ p + geom_line(aes(group=country)) +
 
 ```
 
+- ggplot has two faceting functions that do slightly different things: `facet_grid()`, seen here, and `facet_wrap()`. Try them out on the Gapminder data.
 
 
 ## A quick bit of data manipulation

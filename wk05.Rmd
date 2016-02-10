@@ -98,7 +98,7 @@ Here we see a recently-tweeted map that makes the point. It shows county-level e
 
 ![Gun Suicides](assets/wk-05-roser-gun-suicides.png)
 
-Here's a map I drew that just shows population density, but reverse-coded so that the darker areas are the ones with fewer people.
+Here's a map I drew that just shows population density, but reverse-coded so that the darker areas 1 fewer people.
 
 ![Reverse-Coded Pop Density](assets/wk-05-us-pop-density-reverse-coded-2014.png)
 

@@ -5,7 +5,7 @@ html_document:
     "--number-sections"
     ]
   md_extensions: +implicit_figures
-  theme: cerulean
+  theme: paper
   highlight: espresso
   toc: true
   toc_float:

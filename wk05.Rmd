@@ -23,6 +23,13 @@ opts_chunk$set(fig.path="assets/wk05-fig-",
 
 opts_knit$set(kfigr.prefix=TRUE,
               kfigr.link=FALSE)
+              
+knit_hooks$set(plot = function(x, options) {
+  paste('<figure><img src="',
+        opts_knit$get('base.url'), paste(x, collapse = '.'),
+        '"><figcaption>', options$fig.cap, '</figcaption></figure>',
+        sep = '')
+})              
 
 ```
 
@@ -111,7 +118,7 @@ A consequence of the choropleth issue is that, especially for US State-level dat
 
 ## Statebins, by Bob Rudis
 
-```{r}
+```{r, fig.cap="Statebins Example 1"}
 
 devtools::install_github("hrbrmstr/statebins")
 library(statebins)
@@ -130,7 +137,7 @@ head(dat)
 
 
 
-```{r}
+```{r, fig.cap="Statebins Example 2"}
 
 p <- statebins(dat, "state", "avgshare94_00", breaks=4,
                 labels=c("0-1", "1-2", "2-3", "3-4"),
@@ -145,7 +152,7 @@ p + theme(legend.position="bottom") +
 
 
 
-```{r}
+```{r, fig.cap="Statebins Example 3"}
 
 p <- statebins_continuous(dat, "state", "avgshare01_07",
                legend_title="Share of workforce with jobs lost or threatened by trade",
@@ -359,7 +366,7 @@ co.map <- merge(co.map, county.data, by="id")
 
 ### Population Density
 
-```{r}
+```{r, fig.cap="US County-Level Population Density"}
 
 p <- ggplot(data=co.map, aes(x=long, y=lat, group=group))
 
@@ -386,7 +393,7 @@ p2
 
 ### Percent Black
 
-```{r}
+```{r, fig.cap="US County-Level Percent Black"}
 
 ### Percent Black
 p <- ggplot(data=co.map, aes(x=long, y=lat, group=group))
@@ -416,7 +423,7 @@ p2
 
 Note that once we have the data frame set up, we can subset it just like we would for any other dataset. For instance, let's take a look at Mississippi.
 
-```{r}
+```{r, fig.cap="Mississippi"}
 
 p <- ggplot(data=subset(co.map, state == "MS"), aes(x=long, y=lat, group=group))
 

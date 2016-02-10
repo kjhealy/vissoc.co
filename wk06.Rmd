@@ -23,6 +23,13 @@ opts_chunk$set(fig.path="assets/wk06-fig-",
 			   
 opts_knit$set(kfigr.prefix=TRUE,
               kfigr.link=FALSE)
+              
+knit_hooks$set(plot = function(x, options) {
+  paste('<figure class="figure"><img src="',
+        opts_knit$get('base.url'), paste(x, collapse = '.'),
+        '"><figcaption>', options$fig.cap, '</figcaption></figure>',
+        sep = '')
+})              
 
 ```
 
@@ -113,7 +120,7 @@ p0 <- p + geom_point()
 
 ```{r}
 
-print(p0)
+p0
 
 ```
 
@@ -134,7 +141,7 @@ p0 <- p + geom_smooth() +
 
 ```{r}
 
-print(p0)
+p0
 
 ```
 
@@ -155,7 +162,7 @@ p0 <- p + geom_smooth() +
 
 ```{r}
 
-print(p0)
+p0
 
 ```
 
@@ -177,7 +184,7 @@ p0 <- p + geom_smooth() +
 
 ```{r}
 
-print(p0)
+p0
 
 ```
 
@@ -202,7 +209,7 @@ p0 <- p + geom_smooth(method = "lm",
 
 ```{r}
 
-print(p0)
+p0
 
 ```
 
@@ -230,7 +237,7 @@ p0 <- p + geom_smooth(method = "lm",
 
 ```{r}
 
-print(p0)
+p0
 
 ```
 
@@ -263,7 +270,7 @@ p0 <- p + geom_smooth(method = "lm",
 
 ```{r}
 
-print(p0)
+p0
 
 ```
 
@@ -296,7 +303,7 @@ p0 <- p + geom_smooth(method = "lm",
 
 ```{r}
 
-print(p0)
+p0
 
 ```
 
@@ -331,7 +338,7 @@ p0 <- p + geom_smooth(method = "lm",
 
 ```{r}
 
-print(p0)
+p0
 
 ```
 
@@ -383,7 +390,7 @@ print(p0)
 ```{r}
 theme_set(theme_economist())
 
-print(p0)
+p0
 
 
 ```
@@ -498,7 +505,7 @@ p0 <-  p + geom_smooth(method = "rqss", formula = y ~ qss(x), se = FALSE) +
 
 ```{r}
 
-print(p0)
+p0
 
 ```
 
@@ -690,9 +697,9 @@ p0 <- p + geom_point(size=1.3) +
 
 
 
-```{r}
+```{r, fig.cap="Quarterly Product Sales"}
 
-print(p0)
+p0
 
 ```
 
@@ -730,7 +737,7 @@ mac.ts <- ts(mac$Sales, start=c(1998, 4), frequency = 4)
 
 
 
-```{r}
+```{r,  fig.cap="Default stl() decomposition"}
 
 ## Loess decomposition 
 
@@ -783,9 +790,6 @@ p5 <- p + geom_line(stat="identity", position="dodge") + ylab("Seasonal/\nTrend 
 ```
 
 
-
-#### Redraw the STL plot with GGplot
-
 ```{r}
 
 grid.newpage()
@@ -795,7 +799,7 @@ vplayout <- function(x, y) viewport(layout.pos.row = x, layout.pos.col = y)
 
 
 
-```{r}
+```{r, fig.cap="STL decomposition in ggplot"}
 
 pushViewport(viewport(layout = grid.layout(5, 1)))
 print(p1, vp = vplayout(1, 1))

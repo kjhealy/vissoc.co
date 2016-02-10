@@ -23,6 +23,13 @@ opts_chunk$set(fig.path="assets/wk03-fig-",
 
 opts_knit$set(kfigr.prefix=TRUE,
               kfigr.link=FALSE)
+              
+knit_hooks$set(plot = function(x, options) {
+  paste('<figure><img src="',
+        opts_knit$get('base.url'), paste(x, collapse = '.'),
+        '"><figcaption>', options$fig.cap, '</figcaption></figure>',
+        sep = '')
+})              
 
 ```
 

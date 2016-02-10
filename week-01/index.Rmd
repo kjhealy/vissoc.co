@@ -36,23 +36,11 @@ opts_knit$set(kfigr.prefix=TRUE,
 ```
 
 - Outline 
-- Housekeeping
 - Motivation and Goals
 - Up and running with R and RStudio
 - A First Figure in R
 
  
-
-# Housekeeping
-
-## [http://socviz.github.io/soc880/](http://socviz.github.io/soc880/)
-
-- Slides, code, and other material will be available there.
-- The site is hosted on GitHub.
-- Take a look at that here: [https://github.com/socviz/soc880](https://github.com/socviz/soc880)
-- Soon we'll get you access for private repositories where you can put your assignments.
-
-
 # We want to create pictures of data that people, including ourselves, can look at and learn from
 
 - Slides and other material for this class will be fairly interactive and hands-on. More like working notes than the sort of thing you would present as finished work, or to an audience

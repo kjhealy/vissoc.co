@@ -131,7 +131,7 @@ the basics of plotting clean data.
 * A simple worked example.
 
 - [Week 1 Notes](week-01/index.html)
-- [Rmd file for the slides](https://github.com/socviz/soc880/blob/gh-pages/week-01/index.Rmd)
+- [Rmd file for the notes](week-01/index.Rmd)
 - [Curve Perception Example](snippets/curve-banking.html). 
 
 #### Setup 
@@ -155,7 +155,7 @@ the basics of plotting clean data.
 * Working with `ggplot`: data, layers, and mappings. 
 
 - [Week 2 Notes](week-02/index.html)
-- [Rmd file for the slides](https://github.com/socviz/soc880/blob/gh-pages/week-02/index.Rmd)
+- [Rmd file for the notes](week-02/index.Rmd)
 
 
 ## Week 3: Exploring Datastets
@@ -166,7 +166,7 @@ the basics of plotting clean data.
 * Effective use of Categorical Variables, Facets, and Small-Multiples
 
 - [Week 3 Notes](week-03/index.html)
-- [Rmd file for the slides](https://github.com/socviz/soc880/blob/gh-pages/week-03/index.Rmd)
+- [Rmd file for the notes](week-03/index.Rmd)
 
 
 ## Week 4: Presenting Results from Models
@@ -177,7 +177,7 @@ the basics of plotting clean data.
 * Comparing multiple estimates.  
 
 - [Week 4 Notes](week-04/index.html)
-- [Rmd file for the slides](https://github.com/socviz/soc880/blob/gh-pages/week-04/index.Rmd)
+- [Rmd file for the notes](week-04/index.Rmd)
 
 
 ## Week 5: Maps 
@@ -185,7 +185,7 @@ the basics of plotting clean data.
 * Maps and Map Projections 
 
 - [Week 5 Notes](week-05/index.html)
-- [Rmd file for the slides](https://github.com/socviz/soc880/blob/gh-pages/week-05/index.Rmd)
+- [Rmd file for the notes](week-05/index.Rmd)
 
 
 ## Week 6: Refining Plots for Presentation
@@ -195,7 +195,7 @@ the basics of plotting clean data.
 * Helper functions
 
 - [Week 6 Notes](week-06/index.html)
-- [Rmd file for the slides](https://github.com/socviz/soc880/blob/gh-pages/week-06/index.Rmd)
+- [Rmd file for the notes](week-06/index.Rmd)
 
 
 ## Week 7: Presentations

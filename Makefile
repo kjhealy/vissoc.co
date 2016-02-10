@@ -17,6 +17,7 @@ clean:
 public: html
 	cp *.Rmd public/
 	cp *.html public/
+	cp styles.css public/
 	cp -r libs public/
 	cp -r assets public/
 	find public -type d -print0 | xargs -0 chmod 755

@@ -6,8 +6,10 @@ html_document:
     ]
   md_extensions: +implicit_figures
   theme: paper
+  fig_caption: true
   highlight: espresso
   toc: true
   toc_float:
     collapsed: false
     smooth_scroll: false
+  css: styles.css

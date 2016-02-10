@@ -110,6 +110,10 @@ Here are some books you may find of use throughout the course. None is required 
 
 This is a new course. The material covered and the topics emphasized will depend in part on the needs of the students. This outline is provisional, and we will fill it out (and possibly change the topics and ordering) as we go.
 
+## Code and Data
+
+The `.Rmd` file used to make each week's notes is given below. You can get everything needed to build this site, including the data for the code chunks, [at this repository on GitHub](https://github.com/kjhealy/vissoc.co).
+
 ## Week 1: Getting Started
 
 We will get up and running in R, set up your work environment so that

@@ -90,7 +90,7 @@ Cartograms try to preserve the sense of geographical space while building the "m
 
 
 
-# America's Ur-Choropleths
+# America's Ur-Choropleths #
 
 In the U.S. case, the fact that states and counties vary widely in size and population means that they can be a bit misleading. And they make it easy to present a geographical distribution to insinuate an explanation. Together the results can be frustrating. Gabriel Rossman remarked to me a while ago that most choropleth maps of the U.S. for whatever variable in effect show population density more than anything else. (There's an [xkcd strip](https://xkcd.com/1138/) about this, too.) The other big variable, in the U.S. case, is Percent Black. Between the two of them, population density and percent black will do a lot to obliterate many a suggestively-patterned map of the United States. Those two variables aren't explanations of anything in isolation, but if it turns out it's more useful to know one or both of them instead of the thing you're plotting, you probably want to reconsider your theory.
 

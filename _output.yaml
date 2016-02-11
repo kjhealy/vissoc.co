@@ -5,7 +5,7 @@ html_document:
     "--number-sections"
     ]
   md_extensions: +implicit_figures
-  theme: paper
+  theme: readable
   fig_caption: true
   highlight: tango
   toc: true

@@ -776,7 +776,7 @@ p <- ggplot(ggiphone.stl, aes(x=Date, y=seasonal))
 p3 <- p + geom_line() + ylab("Seasonal")
 
 p <- ggplot(ggiphone.stl, aes(x=Date, y=remainder))
-p4 <- p + geom_bar(stat="identity", position="dodge") + ylab("Remainder")
+p4 <- p + geom_bar(stat="identity", position=position_dodge()) + ylab("Remainder")
 
 p <- ggplot(ggiphone.stl, aes(x=Date, y=(seasonal/trend)*100))
 p5 <- p + geom_line(stat="identity", position="dodge") + ylab("Seasonal/\nTrend (pct)")
@@ -794,7 +794,7 @@ vplayout <- function(x, y) viewport(layout.pos.row = x, layout.pos.col = y)
 
 
 
-```{r, fig.cap="STL decomposition in ggplot"}
+```{r, fig.cap="STL decomposition in ggplot", width=8, height=7}
 
 pushViewport(viewport(layout = grid.layout(5, 1)))
 print(p1, vp = vplayout(1, 1))

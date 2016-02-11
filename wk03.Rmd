@@ -187,7 +187,9 @@ p + geom_line() +
 
 - Hmm, not much better
 - Also, why are there no x labels for years?
-- It's the scale instruction that we copied from the previous code chunk. Remove it:
+- It's the scale instruction that we copied from the previous code
+  chunk. A log scale is right for the GDP numbers but not for Year.
+  Let's remove it:
 
 ```{r}
 
@@ -237,10 +239,10 @@ p + geom_line(aes(group=country,
 p <- ggplot(my.data,
             aes(x=year, y=lifeExp))
 p + geom_line(aes(group=country,
-                  color=(continent=="Asia"))) + scale_color_manual(values=c("gray70", "firebrick")) 
+                  color=(continent=="Asia"))) 
 ```
 
-
+- Notice the double equals sign there in the expression `color=(continent=="Asia")`. That's the "logical" equals. In effect it checks every observation in the `continent` variable and asks whether its value is equal to "Asia". If it is it returns `TRUE`, if not, `FALSE`. So this is like creating a dummy variable on the fly.
 
 
 ## Better colors
@@ -251,12 +253,12 @@ p + geom_line(aes(group=country,
 p <- ggplot(my.data,
             aes(x=year, y=lifeExp))
 p + geom_line(aes(group=country,
-                  color=(continent=="Asia"))) +
-    scale_color_manual(values=c("gray70", "firebrick")) 
+                  color=(continent=="Asia"))) 
 
 ```
 
-
+- We can see the results in the plot: the variable mapped to color takes values of `TRUE` and `FALSE`.
+- An alternative way to do this would be to create the dummy variable in the data frame beforehand instead.
 
 ## Better Legend Labels
 
@@ -264,12 +266,11 @@ p + geom_line(aes(group=country,
 
 p + geom_line(aes(group=country,
                   color=(continent=="Asia"))) +
-    scale_color_manual(values=c("gray70", "firebrick"),
-                       labels=c("All Other Countries", "Asian Countries")) +
+    scale_color_discrete(labels=c("All Other Countries", "Asian Countries")) +
     scale_x_log10() 
 ```
 
-
+- In this step we directly specify the labels for the `color` mapping, using `scale_color_discrete`, because we want them to be nicer than their actual values of `TRUE` and `FALSE`. 
 
 
 
@@ -279,14 +280,11 @@ p + geom_line(aes(group=country,
 
 p + geom_line(aes(group=country,
                   color=(continent=="Asia"))) +
-    scale_color_manual(values=c("gray70", "firebrick"),
-                       labels=c("All Other Countries", "Asian Countries")) +
+    scale_color_discrete(labels=c("All Other Countries", "Asian Countries")) +
     labs(color="Country") +
     theme(legend.position="top")
     
 ```
-
-
 
 
 ## Make the Salient category the first one
@@ -295,8 +293,7 @@ p + geom_line(aes(group=country,
 
 p + geom_line(aes(group=country,
                   color=(continent=="Asia"))) +
-    scale_color_manual(values=c("gray70", "firebrick"),
-                       labels=c("All Other Countries", "Asian Countries")) +
+    scale_color_discrete(labels=c("All Other Countries", "Asian Countries")) +
     labs(color="Country") +
     theme(legend.position="top") +
     guides(color=guide_legend(reverse = TRUE))
@@ -312,7 +309,25 @@ p + geom_line(aes(group=country,
 
 p + geom_line(aes(group=country,
                   color=(continent=="Asia"))) +
-    scale_color_manual(values=c("gray70", "firebrick"),
+    scale_color_discrete(labels=c("All Other Countries", "Asian Countries")) +
+    labs(x="Year",
+         y="Life Expectancy",
+         color="Country") +
+    theme(legend.position="top") +
+    guides(color=guide_legend(reverse = TRUE))
+    
+```
+
+
+## Change the Colors
+
+- Really we'd like the non-Asian countries to be grey.
+
+```{r}
+
+p + geom_line(aes(group=country,
+                  color=(continent=="Asia"))) +
+    scale_color_manual(values=c("gray80", "firebrick"),
                        labels=c("All Other Countries", "Asian Countries")) +
     labs(x="Year",
          y="Life Expectancy",
@@ -322,8 +337,8 @@ p + geom_line(aes(group=country,
     
 ```
 
-- Still lots of room for improvement. E.g., note how the Asian trend lines are drawn under the gray ones. 
 
+- Still lots of room for improvement. E.g., note how the Asian trend lines are drawn under the non-Asian ones.
 
 
 ## Layer logic 

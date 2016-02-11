@@ -7,7 +7,7 @@ html_document:
   md_extensions: +implicit_figures
   theme: paper
   fig_caption: true
-  highlight: espresso
+  highlight: tango
   toc: true
   toc_float:
     collapsed: false

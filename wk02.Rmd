@@ -46,18 +46,18 @@ knit_hooks$set(plot = function(x, options) {
 
 # Visualization Principles Again
 
-## Perception
-
 - Visualizing data is not just a matter of good taste.
 - Basic perceptual processes play a very strong role.
 - These have consequences for how we will want to encode data when we
-  visualize iti.e., how and whether we choose to represent numbers
+  visualize it---i.e., how and whether we choose to represent numbers
   or categories as shapes, colors, lengths, etc.
+
+## Perception
+
 - We more easily see edges, contrasts, and movement.
 - We judge relative differences rather than absolute values.
 - We tend to infer relationships between elements based on
   gestalt-like rules.
-
 
 
 ## Hermann Grid Effect
@@ -66,7 +66,7 @@ knit_hooks$set(plot = function(x, options) {
 
 
 
-## Constrast Effects 
+## Contrast Effects 
 
 ![Contrast Effects](assets/perception-contrast-effects.png)
 
@@ -466,19 +466,23 @@ p + geom_bar(stat="identity")
 
 
 
-```{r, fig.width=12, fig.height=5}
+```{r, fig.width=5, fig.height=10}
 
 ## "Not in" convenience operator
 "%nin%" <- function(x, y) {
   return( !(x %in% y) )
 }
 
+library(scales)
+
 p <- ggplot(subset(my.data, country %nin% "Kuwait"), aes(x=year, y=gdpPercap))
 
 p1 <- p + geom_line(color="gray70", aes(group=country)) +
     geom_smooth(size=1.1, method="loess", se=FALSE)
 
-p1 + facet_wrap(~ continent) + labs(x="Year", y="GDP")
+p1 + facet_wrap(~ continent, ncol=1) +
+    labs(x="Year", y="GDP per capita") +
+    scale_y_continuous(labels=dollar)
     
 
 ```

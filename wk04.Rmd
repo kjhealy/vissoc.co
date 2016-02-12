@@ -92,7 +92,7 @@ print(p)
 
 # Looking While Modeling
 
-- Frank Harrell, *Regression Modeling Strategies* (Springer 2001) is an older text, but the visualization principles are good. Two of his useful software libraries for R are `Hmisc` and `rms`.
+- Frank Harrell, *Regression Modeling Strategies* (Springer 2015) is an older text recently revised and updated to a second edition. It has a lot of good worked examples. Two of his useful software libraries for R are `Hmisc` and `rms`.
 
 ```{r}
 

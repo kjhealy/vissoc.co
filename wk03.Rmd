@@ -242,7 +242,7 @@ p + geom_line(aes(group=country,
                   color=(continent=="Asia"))) 
 ```
 
-- Notice the double equals sign there in the expression `color=(continent=="Asia")`. That's the "logical" equals. In effect it checks every observation in the `continent` variable and asks whether its value is equal to "Asia". If it is it returns `TRUE`, if not, `FALSE`. So this is like creating a dummy variable on the fly.
+- Notice the double equals sign there in the expression `color=(continent=="Asia")`. That's the "logical" equals. The expression checks every observation in the `continent` variable and asks whether its value is equal to "Asia". If it is, it returns `TRUE`, if not, `FALSE`. So we are in effect creating a dummy variable on the fly.
 
 
 ## Better colors

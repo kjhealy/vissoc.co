@@ -5,9 +5,9 @@ html_document:
     "--number-sections"
     ]
   md_extensions: +implicit_figures
-  theme: paper
+  theme: readable
   fig_caption: true
-  highlight: espresso
+  highlight: tango
   toc: true
   toc_float:
     collapsed: false

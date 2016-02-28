@@ -4,12 +4,13 @@ PUBLIC_DIR = public/
 HTML_FILES := $(patsubst %.Rmd, %.html ,$(wildcard *.Rmd))
 
 
-all: clean html
+all: clean deploy
 
 html: $(HTML_FILES)
 
 %.html: %.Rmd
 	R --slave -e "set.seed(100);rmarkdown::render('$<')"
+	proc-typekit.sh $@
 
 clean:
 	$(RM) $(HTML_FILES)

@@ -1,14 +1,20 @@
 
 html, body {
 
-    font-size: 16px;
+    font-family: 'ff-tisa-web-pro', Georgia, 'Times New Roman', Times, Serif;
+    font-size: 1.05em;
+    line-height: 1.6em;    
     color: #333333;
 }
 
+h1, h2, h3, h4, h5 {
+	font-family: 'ff-tisa-web-pro', 'Trebuchet MS', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
 
-.section {
-    padding-top: 1.25em;
-    padding-bottom: 2em;
+h2, h3 {
+	text-transform: lowercase;
+	font-family: 'ff-meta-serif-sc-web-pro', 'Trebuchet MS', 'Helvetica Neue', Tahoma;
+	font-style: normal;
 }
 
 .figure {
@@ -40,7 +46,13 @@ blockquote {
 @media (max-width: 767px) {
     
   html, body{
-      font-size: 16px;
+      font-size: 1em;
+      
+  }
+
+  .container-fluid {
+      padding-left: 1px;
+      padding-right: 2px;
   }
 
   .sourceCode pre {
